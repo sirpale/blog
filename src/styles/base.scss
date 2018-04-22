@@ -1,0 +1,79 @@
+/* reset */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{font:12px/1.14 "Microsoft YaHei",\5b8b\4f53;color:#333;outline:0;}
+body{background:#f2f2f2;}
+a,a:hover{color:#333;transition:all .2s ease-in;}
+
+.clear {clear:both;line-height:0;height:0;}
+
+.red {color:red;}
+
+.el-card__body {padding:6px 10px;margin:0;}
+.el-form-item {margin-bottom:12px;}
+
+
+#app {padding:0;margin:0;}
+.head-top {padding:0 20px;height:30px;line-height:30px;font-size:14px;background:#333;color:#ddd;border-bottom:#e6e6e6;
+  .left {float:left;
+    span {padding: 0 10px;}
+    b {font-weight:500;color: #fff;}
+  }
+  .right {float:right;height:30px;overflow:hidden;
+    button.login-btn {padding:0;color:#ddd;}
+    a {display:block;float:right;}
+    .login-after {
+      a {
+        color:#eee;
+        display: inline;float:right;padding: 0 10px;
+        &:hover {color:#fff}
+      }
+    }
+  }
+}
+
+#head {
+  background:#fff;
+  .nav {padding: 0 20px;}
+}
+.container {
+  padding: 0 20px;
+  margin:0 auto;
+}
+
+.container-box {
+  margin: 10px 0;
+}
+
+.box-card,.border-card {
+  //transition:all 3s ease-in-out;
+  position:relative;
+  top:30px;
+  left:0;
+  margin: 10px 0;
+  animation: up .5s forwards;
+}
+
+@keyframes up {
+  0% {top:30px;}
+  100% {top:0}
+}
+
+.content-card {min-height:300px;}
+
+
