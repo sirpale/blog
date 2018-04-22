@@ -1,6 +1,5 @@
 import Head from '@/pages/public/head';
 import Foot from '@/pages/public/foot';
-
 import Login from '@/components/login';
 
 export default {
@@ -26,7 +25,7 @@ export default {
       let d = date.getDate();
       let w = date.getDay();
 
-      let arr = ['一','二','三', '四', '五', '六', '日'];
+      let arr = ['日','一','二','三', '四', '五', '六' ];
 
       let h = date.getHours();
       let minu = date.getMinutes();
@@ -36,7 +35,7 @@ export default {
       minu = minu < 10 ? `0${minu}`: minu;
       s = s < 10 ? `0${s}` : s;
 
-      return `${y}年${m}月${d}日，${h}:${minu}:${s}，星期${arr[w-1]}`;
+      return `${y}年${m}月${d}日，${h}:${minu}:${s}，星期${arr[w]}`;
 
     }
   }

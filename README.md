@@ -2,12 +2,13 @@
 
 > my blog
 
-前端技术栈：
-vue+vue-router+vuex+axios+webpack
+### 前端技术栈：
+#### vue+vue-router+vuex+axios+webpack
 
-后端技术栈：node+express+mysql
+###后端技术栈：
+#### node+express+mysql
 
-## Build Setup
+## 前端启动
 
 ``` bash
 # install dependencies
@@ -32,6 +33,12 @@ npm run e2e
 npm test
 ```
 
+## 服务器启动
+```$xslt
+cd server
+nodemon app
+
+```
 
 > 2018年4月22日
 - 创建git仓库
