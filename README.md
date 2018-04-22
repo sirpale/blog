@@ -27,5 +27,10 @@ npm run e2e
 npm test
 ```
 
+
+> 2018年4月22日
+- 创建git仓库
+- 上传源码
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 "# blog" 
