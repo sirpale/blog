@@ -2,11 +2,11 @@
 
 > my blog
 
-### 前端技术栈：
-#### vue+vue-router+vuex+axios+webpack
+## 前端技术栈：
+> vue+vue-router+vuex+axios+webpack
 
-###后端技术栈：
-#### node+express+mysql
+## 后端技术栈：
+> node+express+mysql
 
 ## 前端启动
 
