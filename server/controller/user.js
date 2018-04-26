@@ -4,12 +4,12 @@ class User {
   constructor(props) {
 
     // 注册用户需要的信息
-    this.name = props.name;
-    this.password = props.password;
+    this.name = props.name || '';
+    this.password = props.password || '';
 
     // 在用户后面保存和更新一些信息
-    this.question = props.question;
-    this.answer = props.answer;
+    this.question = props.question || '';
+    this.answer = props.answer || '';
   }
 
   // 保存用户信息
@@ -162,6 +162,33 @@ class User {
       });
 
     });
+  }
+
+  // 获取指定id的文章
+  getArticleId(id, callback) {
+
+    return new Promise((resolve, reject) => {
+      Pool.getConnection((err, conn) => {
+        if(err) {
+          callback(err, null);
+          conn.release();
+          reject(err);
+        }
+
+        conn.query(`select * from b_article1 where article_id=${id} limit 1`,(error, res) => {
+          conn.release();
+          if(!res) {
+            callback(err,null);
+            reject(err);
+          } else {
+            callback(err, res);
+            resolve(res);
+          }
+        });
+
+      });
+    });
+
   }
 
 

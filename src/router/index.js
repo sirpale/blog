@@ -9,6 +9,7 @@ import Message from '@/pages/message';
 
 import UserHome from '@/pages/user/user-home';
 import SubArticle from '@/pages/sub-article';
+import Detail from '@/pages/detail';
 
 Vue.use(Router);
 
@@ -69,6 +70,14 @@ const router = new Router({
       component: SubArticle,
       meta: {
         title: '发表文章'
+      }
+    },
+    {
+      path: '/detail/:id',
+      name: 'detail',
+      component: Detail,
+      meta: {
+        title: '文章详情'
       }
     }
   ]

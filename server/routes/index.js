@@ -25,6 +25,7 @@ module.exports = app => {
       if(rs && rs.length > 0) {
 
         for(let i=0;i<rs.length;i++) {
+          rs[i]['id'] = rs[i]['article_id'];
           rs[i]['createTime'] = Dte.timeStampToTime(rs[i]['create_time']);
           rs[i]['postNum'] = rs[i]['post_num'];
          }
@@ -237,6 +238,42 @@ module.exports = app => {
     }
 
   });
+
+
+  // 获取文章详情
+  app.get('/getArticle',(req, res, next) => {
+
+    let user = new User({});
+    let info = {
+      status: 'error',
+      message: '获取失败'
+    };
+
+    let aid = req.query.id;
+
+
+    if(aid) {
+
+      user.getArticleId(aid, (err, rs) => {
+
+        rs[0]['createTime'] = Dte.timeStampToTime(rs[0]['create_time']);
+        rs[0]['updateTime'] = rs[0]['update_time'];
+        rs[0]['postNum'] = rs[0]['post_num'];
+
+        info = {
+          status: 'success',
+          message: '获取成功！',
+          data : rs[0]
+        };
+
+        res.send(info);
+      });
+
+    }
+
+
+  });
+
 
 };
 

@@ -7,7 +7,16 @@
           <el-input v-model="form.title" />
         </el-form-item>
         <el-form-item label="内容：">
-          <el-input type="textarea" v-model="form.content" rows="10" />
+          <quill-editor
+            v-model="form.content"
+            :height="300"
+            :options="editorOption"
+            @blur=""
+            @focus=""
+            @ready=""
+           />
+          <!--<mavon-editor v-model="form.content"/>-->
+          <!--<el-input type="textarea" v-model="form.content" rows="10" />-->
         </el-form-item>
         <el-form-item label="是否显示：">
           <el-switch
@@ -35,9 +44,10 @@
   </div>
 
 </template>
+<style scoped lang="scss">
+
+</style>
 
 <script src="@/js/sub-article.js"></script>
 
-<style scoped>
 
-</style>

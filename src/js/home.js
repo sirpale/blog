@@ -16,7 +16,16 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {},
-    get_user_feedback(pagenum=null, page=1) {}
+    get_user_feedback(pagenum=null, page=1) {},
+    jumpToDetail(idx) {
+
+      let _this = this;
+
+      _this.$router.push({
+        path:`/detail/${idx}`
+      });
+
+    }
   },
   mounted() {
 

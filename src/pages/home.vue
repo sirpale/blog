@@ -21,14 +21,14 @@
 
             <el-col :span="4">
               <div class="left grid-content">
-                <a href="javascript:void(0);">
+                <a href="javascript:void(0);" @click="jumpToDetail(item.id)">
                   <img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">
                 </a>
               </div>
             </el-col>
             <el-col :span="20">
               <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">{{ item.title }}</a>
+                <a href="javascript:void(0);" class="title" @click="jumpToDetail(item.id)">{{ item.title }}</a>
                 <p>{{ item.content.substring(0, 50) }}...<a href="javascript:void(0);">【详细】</a></p>
                 <span>作者：<b>{{ item.author }}</b> 发表于：{{ item.createTime }} 浏览：<em>{{ item.hits }}</em> 评论：<i>{{ item.postNum }}</i></span>
               </div>
