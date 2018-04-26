@@ -47,6 +47,7 @@ nodemon app
 > 2018年4月26日
 - 发表文章
 - 首页展示文章
+- 增加详情页
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 "# blog" 
