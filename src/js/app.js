@@ -14,7 +14,7 @@ export default {
     let _this = this;
     setInterval(() => {
       _this.date = _this.getDate();
-    }, 1000)
+    }, 1000);
 
   },
   methods: {

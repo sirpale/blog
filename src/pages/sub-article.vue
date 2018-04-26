@@ -1,4 +1,5 @@
 <template>
+
   <div class="container-box">
     <el-card class="box-card" style="padding:20px 0;">
       <el-form :ref="form" label-width="100px">
@@ -27,6 +28,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="subArticle">发表文章</el-button>
+          <span class="red" v-show="show">{{ this.msg }}</span>
         </el-form-item>
       </el-form>
     </el-card>

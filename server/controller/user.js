@@ -73,7 +73,6 @@ class User {
 
 
   // 保存文章
-
   saveArticle(article, callback) {
 
     return new Promise((resolve, reject) => {
@@ -85,7 +84,29 @@ class User {
           reject(err);
         }
 
-        conn.query(`insert into b_article(title,author,content,is_show,tags) values('${article.title}','${article.author}','${article.content}','${article.isShow}','${article.tags}')`,(err, res) => {
+
+        let hits = Math.floor(Math.random() * 3000);
+        let postNum = Math.floor(Math.random() * 300)
+
+        conn.query(`insert into b_article1(
+        title,
+        content,
+        is_show,
+        author,
+        tags,
+        create_time,
+        hits,
+        post_num
+        ) values(
+        '${article.title}',
+        '${article.content}',
+        1,
+        '${article.author}',
+        '${article.tags}',
+        '${article.createTime}',
+        '${hits}',
+        '${postNum}'
+        )`,(err, res) => {
           conn.release();
 
           console.log('文章保存结果：');
@@ -99,13 +120,50 @@ class User {
             resolve(res);
           }
 
-        })
-      })
+        });
+      });
 
     });
 
 
   }
+
+
+  // 获取指定数量的文章
+  getArticle(num,callback) {
+
+    // console.log(num);
+
+    return new Promise((resove, reject) => {
+
+      Pool.getConnection((err, conn) => {
+
+        if(err) {
+          callback(err, null);
+          conn.release();
+          reject(err);
+        }
+
+        conn.query(`select * from b_article1 order by update_time desc limit ${num}`,(err, res) => {
+
+          // console.log(res);
+          conn.release();
+          if(err) {
+            callback(err, null);
+            reject(err);
+          } else {
+            callback(err, res);
+          }
+
+
+
+        });
+
+      });
+
+    });
+  }
+
 
 }
 

@@ -1,14 +1,45 @@
-const express = require('express');
 const crypto = require('crypto');
 
 // const User =  require('../controller/user');
 const User  = require('../controller/user');
+const Dte = require('../utils/date');
 
 module.exports = app => {
 
   // 主页
   app.get('/',(req, res, next) => {
-    res.render('index', {title: 'Express'});
+
+
+
+
+    let user = new User({});
+    let info = {
+      status: 'error',
+      message: '获取文章失败'
+    };
+
+    // console.log(user);
+
+    user.getArticle(10,(err, rs) => {
+
+      if(rs && rs.length > 0) {
+
+        for(let i=0;i<rs.length;i++) {
+          rs[i]['createTime'] = Dte.timeStampToTime(rs[i]['create_time']);
+          rs[i]['postNum'] = rs[i]['post_num'];
+         }
+
+        info = {
+          status : 'success',
+          message: '获取文章成功！',
+          data: rs
+        };
+
+        res.send(info);
+      }
+
+    });
+
   });
 
 
@@ -169,31 +200,41 @@ module.exports = app => {
   app.post('/subarticle',(req, res, next) => {
     let user = new User({});
 
-    console.log(user);
-
     let info ={
       status: 'error',
       message: '提交失败！'
     };
+
+    console.log('用户session值');
+    console.log(req.session);
 
     if(req.session.user.name) {
       let article = {
         author: req.session.user.name,
         title: req.body.title,
         content: req.body.content,
-        isShow: req.body.isShow,
-        tags: (req.body.tags).join(',')
+        isShow: req.body.isShow === true ? 1 : 0,
+        tags: (req.body.tags).join(','),
+        createTime: Date.now()
       };
 
 
+      user.saveArticle(article,(err, rs) => {
+
+        if(rs) {
+          info = {
+            status: 'success',
+            message: '文章发表成功！'
+          };
+
+
+        }
+
+
+        return res.send(info);
+
+      });
     }
-
-
-
-
-    console.log(req.session);
-
-    res.send(info);
 
   });
 

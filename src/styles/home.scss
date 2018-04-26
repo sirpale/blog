@@ -3,13 +3,13 @@
 
 
 /**列表*/
-.list-home {height:170px;border-left:10px solid #fff;
+.list-home {height:120px;border-left:10px solid #fff;
   &:hover{
     border-left:10px solid #abcdef;
   }
 }
-.list-home .left {}
-.list-home .left a {display:block;height:150px;}
+.list-home .left {padding-top:6px;}
+.list-home .left a {display:block;height:100px;}
 .list-home .left a img {width:100%;height:100%;}
 
 .list-home .right {padding-left:20px;}
@@ -19,7 +19,7 @@
     padding-left:10px;
   }
 }
-.list-home .right p {line-height:20px;font-size:14px;color:#666; a:hover{color:red;}}
+.list-home .right p {line-height:20px;height:40px;overflow:hidden;font-size:14px;color:#666; a:hover{color:red;}}
 .list-home .right span {display:block;padding-top:6px;color:#999;}
 .list-home .right span b {padding-right:10px;}
 .list-home .right span em {padding-right:10px;}

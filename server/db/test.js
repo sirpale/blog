@@ -1,4 +1,5 @@
 const DB = require('./db');
+const Polling = require('./pooling');
 
 // 增加
 // let s = DB.row('insert into b_user(name,password,question,answer) values("xiaobai3",1,1,1)');
@@ -14,4 +15,7 @@ const DB = require('./db');
 //   let s = await DB.row("select * from b_user limit 10 ");
 //   console.log(s[0])
 // })();
+
+
+
 

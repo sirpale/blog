@@ -2,7 +2,9 @@
   <div id="home">
     <el-row>
       <el-col :span="18">
-        <div class="grid-content">
+        <span v-show="articleList.length  === 0">暂时没有数据...</span>
+        <div class="grid-content" v-for="(item,index) in articleList">
+
           <!-- 轮播图 -->
           <!--<el-card class="box-card">-->
             <!--<div class="block">-->
@@ -15,114 +17,25 @@
           <!--</el-card>-->
 
           <!-- 文章列表 -->
-          <el-card class="box-card list-home">
+          <el-card class="box-card list-home" v-bind:key="index">
 
-            <el-col :span="8">
+            <el-col :span="4">
               <div class="left grid-content">
                 <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/04/201804031522742344512707.jpeg" alt="">
+                  <img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">
                 </a>
               </div>
             </el-col>
-            <el-col :span="16">
+            <el-col :span="20">
               <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
+                <a href="javascript:void(0);" class="title">{{ item.title }}</a>
+                <p>{{ item.content.substring(0, 50) }}...<a href="javascript:void(0);">【详细】</a></p>
+                <span>作者：<b>{{ item.author }}</b> 发表于：{{ item.createTime }} 浏览：<em>{{ item.hits }}</em> 评论：<i>{{ item.postNum }}</i></span>
               </div>
             </el-col>
 
           </el-card>
-          <el-card class="box-card list-home">
 
-            <el-col :span="8">
-              <div class="left grid-content">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/03/201803281522217076675064.jpg" alt="">
-                </a>
-              </div>
-            </el-col>
-            <el-col :span="16">
-              <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
-              </div>
-            </el-col>
-
-          </el-card>
-          <el-card class="box-card list-home">
-
-            <el-col :span="8">
-              <div class="left grid-content">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/04/201804031522742344512707.jpeg" alt="">
-                </a>
-              </div>
-            </el-col>
-            <el-col :span="16">
-              <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
-              </div>
-            </el-col>
-
-          </el-card>
-          <el-card class="box-card list-home">
-
-            <el-col :span="8">
-              <div class="left grid-content">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/03/201803281522217076675064.jpg" alt="">
-                </a>
-              </div>
-            </el-col>
-            <el-col :span="16">
-              <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
-              </div>
-            </el-col>
-
-          </el-card>
-          <el-card class="box-card list-home">
-
-            <el-col :span="8">
-              <div class="left grid-content">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/04/201804031522742344512707.jpeg" alt="">
-                </a>
-              </div>
-            </el-col>
-            <el-col :span="16">
-              <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
-              </div>
-            </el-col>
-
-          </el-card>
-          <el-card class="box-card list-home">
-
-            <el-col :span="8">
-              <div class="left grid-content">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/03/201803281522217076675064.jpg" alt="">
-                </a>
-              </div>
-            </el-col>
-            <el-col :span="16">
-              <div class="right grid-content">
-                <a href="javascript:void(0);" class="title">PHP智能侧边栏跟随固定范围浮动的效果</a>
-                <p>其实关于主题家这个模板我之前一直在打算找一款插件，可以自动调整右侧的跟随效果，但是苦于没有思路一直没整，前几天网友又反映到这个问题了，于是重新整理查找资料，我记得之前写过一篇“zblogphp侧栏跟随代码教程，看了就会。”的博文，但是这个仅仅针对右侧某个栏目跟随，而且不能判断整...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>sirpale</b> 发表于：2018-04-18 浏览：<em>2046</em> 评论：<i>1024</i></span>
-              </div>
-            </el-col>
-
-          </el-card>
 
         </div>
       </el-col>
@@ -308,36 +221,7 @@
   </div>
 </template>
 
-<script>
-
-
-
-  export default {
-    name: "home",
-    components: {},
-    data() {
-      return {
-        loading: true,
-        imgs : [
-          'http://newimg88.b0.upaiyun.com/newimg88/2018/03/1_2VqxkdyNCmWa8ojZZIoQOg.jpeg',
-          // 'http://newimg88.b0.upaiyun.com/newimg88/2018/03/foreach.png',
-          // 'http://newimg88.b0.upaiyun.com/newimg88/2018/03/1_sQy6GT_F86lYw6wrcZbQpA-1.png',
-          // 'http://newimg88.b0.upaiyun.com/newimg88/2018/02/javascript-error.png'
-        ]
-      }
-    },
-    methods: {
-      handleSelect(key, keyPath) {},
-      get_user_feedback(pagenum=null, page=1) {}
-    },
-    mounted() {
-
-      let _this = this;
-      _this.loading = false;
-
-    }
-  }
-</script>
+<script src="@/js/home.js"></script>
 
 <style lang="scss" scoped>
 
