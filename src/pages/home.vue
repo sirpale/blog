@@ -1,9 +1,13 @@
 <template>
   <div id="home">
     <el-row>
-      <el-col :span="18">
-        <span v-show="articleList.length  === 0">暂时没有数据...</span>
-        <div class="grid-content" v-for="(item,index) in articleList">
+      <el-col :span="18"
+              v-loading="loading"
+              element-loading-text = '数据在加载中...'
+              element-loading-background="rgba(255,255,255)"
+      >
+        <el-card  v-if="articleList.length == 0" class="no-data">{{noData}}</el-card>
+        <el-row class="grid-content" v-for="(item,index) in articleList" :key="index">
 
           <!-- 轮播图 -->
           <!--<el-card class="box-card">-->
@@ -17,36 +21,46 @@
           <!--</el-card>-->
 
           <!-- 文章列表 -->
-          <el-card class="box-card list-home" v-bind:key="index">
+          <el-card class="box-card list-home" >
 
             <el-col :span="4">
               <div class="left grid-content">
-                <a href="javascript:void(0);" @click="jumpToDetail(item.id)">
+                <!--<a href="javascript:void(0);" @click="jumpToDetail(item.id)">-->
+                  <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
+                <!--</a>-->
+                <router-link :to="{path:`/detail/${item.id}`}">
                   <img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">
-                </a>
+                </router-link>
               </div>
             </el-col>
             <el-col :span="20">
               <div class="right grid-content">
-                <a href="javascript:void(0);" class="title" @click="jumpToDetail(item.id)">{{ item.title }}</a>
-                <p>{{ item.content.substring(0, 50) }}...<a href="javascript:void(0);">【详细】</a></p>
-                <span>作者：<b>{{ item.author }}</b> 发表于：{{ item.createTime }} 浏览：<em>{{ item.hits }}</em> 评论：<i>{{ item.postNum }}</i></span>
+                <router-link :to="{path: `/detail/${item.id}`}" class="title">{{item.title}}</router-link>
+                <p>{{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}">【详细】</router-link></p>
+                <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
+                <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
+                <span>
+                  <i class="el-icon-edit"></i>&nbsp;
+                  <b>{{ item.author }}</b> &nbsp;
+                  <i class="el-icon-date"></i>&nbsp;
+                  {{ item.createTime }}&nbsp;
+                  <i class="el-icon-view"></i>&nbsp;
+                  <em>{{ item.hits }}</em> &nbsp;
+                  <i class="el-icon-edit-outline"></i>&nbsp;
+                  <i>{{ item.postNum }}</i></span>
               </div>
             </el-col>
-
           </el-card>
-
-
-        </div>
+        </el-row >
       </el-col>
-      <el-col :span="6" style="padding-left:10px;">
+      <el-col :span="6" style="padding-left:10px;" >
         <div class="grid-content">
           <!-- 信息-->
           <el-card class="box-card ava">
-            <el-col :span="8" class="left">
-              <a href="javascript:void(0);"><img src="http://newimg88.b0.upaiyun.com/newimg88/2017/12/30-seconds-of-code-b.png" alt=""></a>
-            </el-col>
-            <el-col :span="16" class="right">
+            <a class="ava-img" href="javascript:void(0);">
+              <img src="../assets/logo.png"  alt="">
+            </a>
+            <el-col :span="24" class="intro">
               <span>盛吉祥</span>
               <p>
                 个人博客，发表日常记录，记录个人成长，工作经验总结

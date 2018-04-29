@@ -5,6 +5,8 @@ export default {
   data() {
     return {
       loading: true,
+      show: true,
+      noData: '暂时没有发表的文章',
       imgs : [
         'http://newimg88.b0.upaiyun.com/newimg88/2018/03/1_2VqxkdyNCmWa8ojZZIoQOg.jpeg',
         // 'http://newimg88.b0.upaiyun.com/newimg88/2018/03/foreach.png',
@@ -30,16 +32,24 @@ export default {
   mounted() {
 
     let _this = this;
-    _this.loading = false;
+    // _this.loading = false;
 
 
     // 获取文章列表
     _this.$http.get('/api/').then(v => {
+
+      _this.loading = false;
       let dt = v.data;
 
-      console.log(dt.data);
+      // console.log(dt.data);
 
-      _this.articleList = dt.data;
+      if(dt.status === 'success') {
+        _this.articleList = dt.data;
+      }
+
+    }).catch(e => {
+      _this.noData = '获取文章列表失败';
+      _this.loading = false;
     })
 
   }

@@ -117,6 +117,7 @@ export default {
             _this.$store.commit('setLogin');
             _this.userInfo = dt.data;
             _this.formReset();
+            _this.$router.push('/');
 
             // sessionStorage.setItem("username",dt.data.name);
             // console.log(sessionStorage);
@@ -156,7 +157,7 @@ export default {
           // 登录成功跳转到个人中心
           // location.href = '/user-home';
           // _this.$router.push({ path :`/user-home/${dt.data.name}`});
-          _this.$router.push({ path :`/sub-article/${dt.data.name}`});
+          _this.$router.push({ path :`/sub-article`});
 
           // let h = _this.$createElement;
           // _this.$message({

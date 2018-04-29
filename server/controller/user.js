@@ -86,7 +86,9 @@ class User {
 
 
         let hits = Math.floor(Math.random() * 3000);
-        let postNum = Math.floor(Math.random() * 300)
+        let postNum = Math.floor(Math.random() * 300);
+
+        console.log(article);
 
         conn.query(`insert into b_article1(
         title,
@@ -96,21 +98,20 @@ class User {
         tags,
         create_time,
         hits,
-        post_num
+        post_num,
+        intro
         ) values(
         '${article.title}',
-        '${article.content}',
+        "${article.content}",
         1,
         '${article.author}',
         '${article.tags}',
         '${article.createTime}',
         '${hits}',
-        '${postNum}'
+        '${postNum}',
+        '${article.intro}'
         )`,(err, res) => {
           conn.release();
-
-          console.log('文章保存结果：');
-          console.log(res);
 
           if(!res) {
             callback(err, null);

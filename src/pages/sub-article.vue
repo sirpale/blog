@@ -6,18 +6,10 @@
         <el-form-item label="标题：">
           <el-input v-model="form.title" />
         </el-form-item>
-        <el-form-item label="内容：">
-          <quill-editor
-            v-model="form.content"
-            :height="300"
-            :options="editorOption"
-            @blur=""
-            @focus=""
-            @ready=""
-           />
-          <!--<mavon-editor v-model="form.content"/>-->
-          <!--<el-input type="textarea" v-model="form.content" rows="10" />-->
+        <el-form-item label="简介：">
+          <el-input type="textarea" v-model="form.intro"   rows="2"/>
         </el-form-item>
+
         <el-form-item label="是否显示：">
           <el-switch
             v-model="form.isShow"
@@ -32,6 +24,33 @@
             <el-checkbox label="javascript" />
           </el-checkbox-group>
         </el-form-item>
+        <el-form-item label="内容：" style="height:400px;margin-top:10px;">
+          <!--<quill-editor-->
+          <!--v-model="form.content"-->
+          <!--:height="300"-->
+          <!--:options="editorOption"-->
+          <!--@blur=""-->
+          <!--@focus=""-->
+          <!--@ready=""-->
+          <!--/>-->
+          <!--<mavon-editor v-model="form.content" :ishljs = "true" style="height:400px;"/>-->
+          <!--<el-input type="textarea" v-model="form.content" rows="10" />-->
+          <div class="quill-editor-example">
+            <!-- quill-editor -->
+            <quill-editor v-model="form.content"
+                          ref="myTextEditor"
+                          :options="editorOption"
+                          @blur="onEditorBlur($event)"
+                          @focus="onEditorFocus($event)"
+                          @ready="onEditorReady($event)"
+                          style="height:300px;"
+            >
+            </quill-editor>
+            <div class="quill-code">
+              <!--<code class="hljs" v-html=""></code>-->
+            </div>
+          </div>
+        </el-form-item>
         <el-form-item label="验证码：">
           <el-input style="width:100px;" />
         </el-form-item>
@@ -45,7 +64,21 @@
 
 </template>
 <style scoped lang="scss">
-
+  .quill-code {
+    border: none;
+    height: auto;
+    > code {
+      width: 100%;
+      margin: 0;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0;
+      height: 10rem;
+      overflow-y: auto;
+      resize: vertical;
+    }
+  }
 </style>
 
 <script src="@/js/sub-article.js"></script>

@@ -1,4 +1,4 @@
-import hljs from 'highlight.js';
+
 
 export default {
   name: "sub-article",
@@ -10,8 +10,14 @@ export default {
         title: '',
         content : '',
         isShow: true,
-        tags: ['javascript']
+        tags: ['javascript'],
+        intro: '',
+        author: '',
+        createTime: '',
+        hits: 0,
+        postNum : 0
       },
+      idx: null,
       msg : '提示信息',
       show: false,
       editorOption: {
@@ -33,7 +39,7 @@ export default {
           ['link', 'image', 'video']
         ],
         syntax: {
-          highlight: text => hljs.highlightAuto(text).value
+          highlight: text => this.$hljs.highlightAuto(text).value
         }
       }
     }
@@ -42,40 +48,88 @@ export default {
     let _this = this;
     _this.form.name = _this.$store.state.login.loginName;
 
-    console.log('当前用户名：');
-    console.log(_this.form.name);
+    _this.idx = _this.$router.history.current.query.id;
 
-    // if(_this.form.name === '') {
-    //   _this.$router.push('/');
-    // }
+    console.log(this.idx);
+
+    if(_this.idx) {
+      // 获取指定文章
+      _this.$http.get(`/api/getArticle?id=${_this.idx}`).then(v => {
+        let dt = v.data;
+
+        _this.loading = false;
+
+        if(dt.status === 'success') {
+
+          _this.form = {
+            id: dt.data.id,
+            title: dt.data.title,
+            content: dt.data.content,
+            intro: dt.data.intro,
+            author: dt.data.author,
+            isShow: dt.data.isShow,
+            tags: dt.data.tags.split(','),
+            createTime: dt.data['createTime'],
+            hits: dt.data.hits,
+            postNum : dt.data['postNum']
+          };
+
+          console.log(_this.form);
+
+        } else {
+          _this.$router.push('/');
+        }
+
+      });
+    }
+
+  },
+  updated() {
+
+    console.log('更新');
+
   },
   methods: {
     subArticle() {
       let _this = this;
 
-      console.log('文章的参数：');
-      console.log(_this.form);
+      // console.log('文章的参数：');
+      // console.log(_this.form);
 
       _this.$http.post('/api/subarticle',_this.form).then( d => {
         let dt = d.data;
-
         if(dt.status === 'success') {
           _this.$router.push('/');
-
           const h = _this.$createElement;
-
-          this.$message({
+          _this.$message({
             message: h('p',null,[
               h('span',null, dt.message)
             ])
           });
-
         } else {
           _this.msg = dt.message;
           _this.show = true;
         }
-
-      })
+      }).catch(e => {
+        console.log(e);
+      });
+    },
+    onEditorBlur(editor) {
+      // console.log('editor blur!', editor)
+    },
+    onEditorFocus(editor) {
+      // console.log('editor focus!', editor)
+    },
+    onEditorReady(editor) {
+      // console.log('editor ready!', editor)
     }
-  }
+  },
+  computed: {
+    editor() {
+      return this.$refs.myTextEditor.quill
+    },
+    contentCode() {
+      return this.$hljs.highlightAuto(this.content).value
+    }
+  },
 }

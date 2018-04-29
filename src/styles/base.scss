@@ -27,6 +27,10 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 .el-card__body {padding:6px 10px;margin:0;}
 .el-form-item {margin-bottom:12px;}
 
+.no-data {display:block;width:100%;text-align:center;height:100px;line-height:100px;padding:30px 0;
+  font-size:20px;
+}
+
 
 #app {padding:0;margin:0;}
 .head-top {padding:0 20px;height:30px;line-height:30px;font-size:14px;background:#333;color:#ddd;border-bottom:#e6e6e6;
@@ -49,7 +53,7 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 #head {
   background:#fff;
-  .nav {padding: 0 20px;}
+  .nav {padding: 0 20px;margin-bottom:10px;}
 }
 .container {
   padding: 0 20px;
@@ -65,7 +69,7 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
   position:relative;
   top:30px;
   left:0;
-  margin: 10px 0;
+  margin-bottom: 6px;
   animation: up .5s forwards;
 }
 

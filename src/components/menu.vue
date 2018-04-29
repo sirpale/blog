@@ -13,7 +13,11 @@
     <el-menu-item index="/tool">工具</el-menu-item>
     <el-menu-item index="/message">留言</el-menu-item>
     <el-input type="text" @focus="" style="width:200px;margin:10px 0 0 10px" placeholder="搜索" />
-    <el-button style="float:right;margin-top:10px;" type="success" v-show="isLogin" @click="jumpToSubArticle(loginName)">发表新文章</el-button>
+    <el-button
+      style="float:right;margin-top:10px;"
+      type="success"
+      v-show="isLogin"
+      @click="jumpToSubArticle">发表新文章</el-button>
   </el-menu>
 
   </div>
@@ -40,8 +44,8 @@
     },
     methods: {
       handleSelect(key, keyPath) {},
-      jumpToSubArticle(name) {
-        this.$router.push(`/sub-article/${name}`);
+      jumpToSubArticle() {
+        this.$router.push(`/sub-article/`);
       }
     }
   }

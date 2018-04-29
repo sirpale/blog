@@ -65,7 +65,7 @@ const router = new Router({
       }
     },
     {
-      path: '/sub-article/:name',
+      path: '/sub-article',
       name: 'sub-article',
       component: SubArticle,
       meta: {
