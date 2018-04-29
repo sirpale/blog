@@ -6,8 +6,8 @@
               element-loading-text = '数据在加载中...'
               element-loading-background="rgba(255,255,255)"
       >
-        <el-card  v-if="articleList.length == 0" class="no-data">{{noData}}</el-card>
-        <el-row class="grid-content" v-for="(item,index) in articleList" :key="index">
+        <el-card  v-show="list.length === 0" class="no-data">{{noData}}</el-card>
+        <el-row class="grid-content" v-for="(item,index) in list" :key="index">
 
           <!-- 轮播图 -->
           <!--<el-card class="box-card">-->
@@ -58,7 +58,7 @@
           <!-- 信息-->
           <el-card class="box-card ava">
             <a class="ava-img" href="javascript:void(0);">
-              <img src="../assets/logo.png"  alt="">
+              <img src="../assets/img/logo.png"  alt="">
             </a>
             <el-col :span="24" class="intro">
               <span>盛吉祥</span>
@@ -235,13 +235,8 @@
   </div>
 </template>
 
-<script src="@/js/home.js"></script>
+<script src="@/assets/js/home.js"></script>
 
 <style lang="scss" scoped>
-
-  @import '../styles/home.scss';
-
-
-
-
+  @import '../assets/css/home.scss';
 </style>

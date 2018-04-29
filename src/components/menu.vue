@@ -26,7 +26,6 @@
 <script>
 
   import {mapState} from 'vuex';
-
   export default {
     data() {
       return {
@@ -45,7 +44,7 @@
     methods: {
       handleSelect(key, keyPath) {},
       jumpToSubArticle() {
-        this.$router.push(`/sub-article/`);
+        this.$router.push({path: `/sub-article/`, query: {id:null}});
       }
     }
   }

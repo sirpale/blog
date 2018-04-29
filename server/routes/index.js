@@ -9,16 +9,13 @@ module.exports = app => {
   // 主页
   app.get('/',(req, res, next) => {
 
-
-
-
     let user = new User({});
     let info = {
       status: 'error',
       message: '获取文章失败'
     };
 
-    let articleNum = 100;
+    let articleNum = req.query.num || 10;
 
     // console.log(user);
 

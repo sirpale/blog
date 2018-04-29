@@ -49,11 +49,16 @@ nodemon app
 - 首页展示文章
 - 增加详情页
 
-> 2018年4月29日
+> 2018年4月28日
 - 优化文章编辑器
 - 文章内容转码
 - 增加文章简介
 - 优化文章显示细节
+
+> 2018年4月29日
+- 优化文件目录
+- 模块抽离
+- 数据抽离
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 "# blog" 

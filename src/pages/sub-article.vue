@@ -1,7 +1,10 @@
 <template>
 
   <div class="container-box">
-    <el-card class="box-card" style="padding:20px 0;">
+    <el-card class="box-card" style="padding:20px 0;"
+             v-loading="loading"
+             element-loading-text = '获取文章信息中..'
+    >
       <el-form :ref="form" label-width="100px">
         <el-form-item label="标题：">
           <el-input v-model="form.title" />
@@ -64,23 +67,8 @@
 
 </template>
 <style scoped lang="scss">
-  .quill-code {
-    border: none;
-    height: auto;
-    > code {
-      width: 100%;
-      margin: 0;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-top: none;
-      border-radius: 0;
-      height: 10rem;
-      overflow-y: auto;
-      resize: vertical;
-    }
-  }
 </style>
 
-<script src="@/js/sub-article.js"></script>
+<script src="@/assets/js/sub-article.js"></script>
 
 

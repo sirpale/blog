@@ -1,43 +1,15 @@
-
+import {mapState} from 'vuex';
 
 export default {
   name: "sub-article",
   data() {
     return {
-
-      form : {
-        name: '',
-        title: '',
-        content : '',
-        isShow: true,
-        tags: ['javascript'],
-        intro: '',
-        author: '',
-        createTime: '',
-        hits: 0,
-        postNum : 0
-      },
       idx: null,
       msg : '提示信息',
       show: false,
       editorOption: {
         height: '300px',
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          ['blockquote', 'code-block'],
-          [{ 'header': 1 }, { 'header': 2 }],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          [{ 'script': 'sub' }, { 'script': 'super' }],
-          [{ 'indent': '-1' }, { 'indent': '+1' }],
-          [{ 'direction': 'rtl' }],
-          [{ 'size': ['small', false, 'large', 'huge'] }],
-          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-          [{ 'font': [] }],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'align': [] }],
-          ['clean'],
-          ['link', 'image', 'video']
-        ],
+        toolbar: this.$store.state.article.toolbar,
         syntax: {
           highlight: text => this.$hljs.highlightAuto(text).value
         }
@@ -45,23 +17,23 @@ export default {
     }
   },
   mounted() {
-    let _this = this;
-    _this.form.name = _this.$store.state.login.loginName;
 
-    _this.idx = _this.$router.history.current.query.id;
+    let _this = this, _store = _this.$store;
 
-    console.log(this.idx);
+    _this.form.name = _store.state.login.loginName;
+    // _this.id = _this.$router.history.current.query.id;
+    _store.dispatch('assignData',{id:_this.$router.history.current.query.id});
 
-    if(_this.idx) {
+    console.log(_this.id);
+    if(_this.id) {
       // 获取指定文章
-      _this.$http.get(`/api/getArticle?id=${_this.idx}`).then(v => {
+      _this.$http.get(`/api/getArticle?id=${_this.id}`).then(v => {
         let dt = v.data;
 
-        _this.loading = false;
-
         if(dt.status === 'success') {
+          _store.dispatch('loading');
 
-          _this.form = {
+          _store.dispatch('assignData',{
             id: dt.data.id,
             title: dt.data.title,
             content: dt.data.content,
@@ -72,22 +44,41 @@ export default {
             createTime: dt.data['createTime'],
             hits: dt.data.hits,
             postNum : dt.data['postNum']
-          };
-
-          console.log(_this.form);
+          });
 
         } else {
           _this.$router.push('/');
         }
 
       });
+
+    } else {
+      _store.dispatch('loading');
     }
 
+  },
+  computed: {
+    ...mapState({
+      loading: state => state.article.loading,
+      id: state=> state.article.data.id,
+      form : state => state.article.data
+    }),
+    editor() {
+      return this.$refs.myTextEditor.quill
+    },
+    contentCode() {
+      return this.$hljs.highlightAuto(this.content).value
+    }
   },
   updated() {
 
     console.log('更新');
 
+  },
+  watch: {
+    idx:  function () {
+      console.log('监听的id:',this.idx);
+    }
   },
   methods: {
     subArticle() {
@@ -123,13 +114,5 @@ export default {
     onEditorReady(editor) {
       // console.log('editor ready!', editor)
     }
-  },
-  computed: {
-    editor() {
-      return this.$refs.myTextEditor.quill
-    },
-    contentCode() {
-      return this.$hljs.highlightAuto(this.content).value
-    }
-  },
+  }
 }

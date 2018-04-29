@@ -49,4 +49,4 @@
   }
 </script>
 
-<style scoped lang="scss" src="../../styles/user.scss"></style>
+<style scoped lang="scss" src="../../assets/css/user.scss"></style>

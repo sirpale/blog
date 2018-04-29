@@ -21,7 +21,7 @@
   </div>
 </template>
 
-<script type="text/javascript" src="./js/app.js"></script>
+<script type="text/javascript" src="@/assets/js/app.js"></script>
 
 
 

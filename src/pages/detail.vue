@@ -5,21 +5,22 @@
   >
     <el-row class="detail-content"
         v-loading="loading"
-        element-loading-text="内容加载中"
+        element-loading-text="加载中..."
     >
-      <span class="no-data" v-show="article.title === ''">暂无数据</span>
-      <h3>
-        {{article.title}}
-        <el-button
-          type="danger"
-          icon="el-icon-edit"
-          size="small"
-          style="float:right;"
-          @click="jumpToEdit(article.id)">
-          修改
-        </el-button>
-      </h3>
-      <span class="author">
+      <span class="no-data" v-show="show">{{ noData }}</span>
+      <div v-show="!show">
+        <h3>
+          {{article.title}}
+          <el-button
+            type="danger"
+            icon="el-icon-edit"
+            size="small"
+            style="float:right;"
+            @click="jumpToEdit(article.id)">
+            修改
+          </el-button>
+        </h3>
+        <span class="author">
         <i class="el-icon-edit"></i>&nbsp;
         {{article.author}} &nbsp;
         <i class="el-icon-date"></i>&nbsp;
@@ -29,11 +30,13 @@
         <i class="el-icon-edit-outline"></i>&nbsp;
         {{article.postNum}}
       </span>
-      <div class="intro">
-        前言：{{ article.intro }}...
-      </div>
-      <div class="content" v-html="article.content"  v-hljs>
-        <!--<mavon-editor v-model="article.content" defaultOpen="preview" :toolbarsFlag="false" :subfield="false" :codeStyle="style"/>-->
+        <div class="intro">
+          前言：{{ article.intro }}...
+        </div>
+
+        <div class="content" v-html="article.content"  v-hljs>
+          <!--<mavon-editor v-model="article.content" defaultOpen="preview" :toolbarsFlag="false" :subfield="false" :codeStyle="style"/>-->
+        </div>
       </div>
 
     </el-row>
@@ -57,4 +60,4 @@
 </style>
 
 
-<script src="@/js/detail.js"></script>
+<script src="@/assets/js/detail.js"></script>
