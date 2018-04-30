@@ -65,5 +65,7 @@ nodemon app
 - 管理员修改文章功能
 - 首页加载更多文章
 
+[在线浏览](http://www.sjx666666.com/)
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 "# blog" 
