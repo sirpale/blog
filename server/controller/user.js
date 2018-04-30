@@ -1,4 +1,5 @@
 const Pool = require('../db/pooling');
+const sqlString = require('sqlstring');
 
 class User {
   constructor(props) {
@@ -30,7 +31,9 @@ class User {
           reject(err);
         }
 
-        conn.query(`insert into b_user(name,password,question,answer) values('${user.name}','${user.password}','${user.question}','${user.answer}')`,(error, res) => {
+        let sql = sqlString.format(`insert into b_user(name,password,question,answer) values('${user.name}','${user.password}','${user.question}','${user.answer}')`);
+
+        conn.query(sql,(error, res) => {
           // 不管是否成功都结束数据库
           conn.release();
 
@@ -54,7 +57,9 @@ class User {
           reject(err);
         }
 
-        conn.query(`select * from b_user where name='${name}' limit 1`, (error, res) => {
+        let sql = sqlString.format(`select * from b_user where name='${name}' limit 1`);
+
+        conn.query(sql, (error, res) => {
           conn.release();
           if(res.length > 0) {
             let user = new User(res[0]);
@@ -90,13 +95,14 @@ class User {
 
         console.log(article);
 
-        conn.query(`insert into b_article1(
+        let sql = sqlString.format(`insert into b_article1(
         title,
         content,
         is_show,
         author,
         tags,
         create_time,
+        update_time,
         hits,
         post_num,
         intro
@@ -107,10 +113,13 @@ class User {
         '${article.author}',
         '${article.tags}',
         '${article.createTime}',
+        '${article.createTime}',
         '${hits}',
         '${postNum}',
         '${article.intro}'
-        )`,(err, res) => {
+        )`);
+
+        conn.query(sql,(err, res) => {
           conn.release();
 
           if(!res) {
@@ -129,6 +138,79 @@ class User {
 
   }
 
+  // 修改文章
+  modifyArticle(article, callback) {
+    return new Promise((resolve, reject) => {
+      Pool.getConnection((err, conn) => {
+        if(err) {
+          conn.release();
+          callback(err, null);
+          reject(err);
+        }
+
+        let hits = Math.floor(Math.random() * 3000);
+        let postNum = Math.floor(Math.random() * 300);
+
+
+        console.log(article);
+        // title=(select title from b_article1 where article_id=${article.id})
+        // let sql = sqlString.format(`update
+        // b_article1
+        // set
+        // title='${article.title}',
+        // content='${article.content}',
+        // author='${article.author}',
+        // tags='${article.tags}',
+        // is_show='${article.isShow}',
+        // intro='${article.intro}'
+        // where
+        // article_id='${article.id}'
+        // `);
+
+        let sql = sqlString.format(`update b_article1 set 
+        title=?,
+        content=?,
+        author=?,
+        update_time=?,
+        tags=?,
+        is_show=?,
+        intro=? 
+        where 
+        article_id=?
+        `,[
+          article.title,
+          article.content,
+          article.author,
+          article.createTime,
+          article.tags,
+          article.isShow,
+          article.intro,
+          article.id
+        ]);
+
+        console.log('=========================');
+        console.log(sql);
+        console.log('==========================');
+
+        conn.query(sql,(err, res) => {
+          conn.release();
+          if(err) {
+            callback(err, null);
+            reject(err);
+          } else {
+
+            console.log('更新的结果：');
+            console.log(res);
+
+            callback(err, res);
+            resolve(res)
+          }
+
+        });
+      });
+    });
+  }
+
 
   // 获取指定数量的文章
   getArticle(num,callback) {
@@ -145,7 +227,9 @@ class User {
           reject(err);
         }
 
-        conn.query(`select * from b_article1 order by update_time desc limit ${num}`,(err, res) => {
+        let sql = sqlString.format(`select * from b_article1 order by update_time desc limit ${num}`);
+
+        conn.query(sql,(err, res) => {
 
           // console.log(res);
           conn.release();
@@ -165,6 +249,40 @@ class User {
     });
   }
 
+  // 获取文章总长度
+  getArticleTotal(callback) {
+
+    return new Promise((resolve, reject) => {
+
+      Pool.getConnection((err, conn) => {
+        if(err) {
+          callback(err, null);
+          conn.release();
+          reject(err);
+        }
+
+        let sql = sqlString.format(`select count(article_id) from b_article1`);
+
+        conn.query(sql, (err, res) => {
+
+          // console.log(res);
+
+          conn.release();
+          if(!res) {
+            callback(err, null);
+            reject(err);
+          } else {
+            callback(err, res[0]);
+            resolve(res);
+          }
+        })
+
+      })
+
+
+    });
+  }
+
   // 获取指定id的文章
   getArticleId(id, callback) {
 
@@ -176,7 +294,9 @@ class User {
           reject(err);
         }
 
-        conn.query(`select * from b_article1 where article_id=${id} limit 1`,(error, res) => {
+        let sql = sqlString.format(`select * from b_article1 where article_id=${id} limit 1`)
+
+        conn.query(sql,(error, res) => {
           conn.release();
           if(!res) {
             callback(err,null);

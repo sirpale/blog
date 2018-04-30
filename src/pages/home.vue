@@ -51,7 +51,11 @@
               </div>
             </el-col>
           </el-card>
+
         </el-row >
+
+        <el-button v-show="getMoreShow" style="width:100%;" @click="getMore">{{getMoreText}}</el-button>
+
       </el-col>
       <el-col :span="6" style="padding-left:10px;" >
         <div class="grid-content">

@@ -1,109 +1,62 @@
-import {mapState} from 'vuex';
+import {mapState, mapActions} from 'vuex';
 
 export default {
-  name: "sub-article",
   data() {
-    return {
-      idx: null,
-      msg : '提示信息',
-      show: false,
-      editorOption: {
-        height: '300px',
-        toolbar: this.$store.state.article.toolbar,
-        syntax: {
-          highlight: text => this.$hljs.highlightAuto(text).value
-        }
-      }
-    }
-  },
-  mounted() {
-
-    let _this = this, _store = _this.$store;
-
-    _this.form.name = _store.state.login.loginName;
-    // _this.id = _this.$router.history.current.query.id;
-    _store.dispatch('assignData',{id:_this.$router.history.current.query.id});
-
-    console.log(_this.id);
-    if(_this.id) {
-      // 获取指定文章
-      _this.$http.get(`/api/getArticle?id=${_this.id}`).then(v => {
-        let dt = v.data;
-
-        if(dt.status === 'success') {
-          _store.dispatch('loading');
-
-          _store.dispatch('assignData',{
-            id: dt.data.id,
-            title: dt.data.title,
-            content: dt.data.content,
-            intro: dt.data.intro,
-            author: dt.data.author,
-            isShow: dt.data.isShow,
-            tags: dt.data.tags.split(','),
-            createTime: dt.data['createTime'],
-            hits: dt.data.hits,
-            postNum : dt.data['postNum']
-          });
-
-        } else {
-          _this.$router.push('/');
-        }
-
-      });
-
-    } else {
-      _store.dispatch('loading');
-    }
-
+    return {}
   },
   computed: {
     ...mapState({
-      loading: state => state.article.loading,
-      id: state=> state.article.data.id,
-      form : state => state.article.data
+      editorOption: state => state.editor.editorOption,
+      loading: state => state.gb.loading,
+      show: state => state.gb.show,
+      msg: state => state.gb.msg,
+      id: state => state.article.data.id,
+      name: state => state.login.loginName,
+      form: state => state.article.data
     }),
     editor() {
       return this.$refs.myTextEditor.quill
     },
     contentCode() {
-      return this.$hljs.highlightAuto(this.content).value
-    }
-  },
-  updated() {
-
-    console.log('更新');
-
-  },
-  watch: {
-    idx:  function () {
-      console.log('监听的id:',this.idx);
+      // return this.$hljs.highlightAuto(this.content).value
     }
   },
   methods: {
+    ...mapActions([
+      'setShow',
+      'setLoading',
+      'assignData',
+      'setMsg',
+      'clearData',
+      'setArticleID',
+      'setIsDisabled'
+    ]),
     subArticle() {
       let _this = this;
 
-      // console.log('文章的参数：');
-      // console.log(_this.form);
+      if(_this.name && _this.name !== '') {
 
-      _this.$http.post('/api/subarticle',_this.form).then( d => {
-        let dt = d.data;
-        if(dt.status === 'success') {
-          _this.$router.push('/');
-          const h = _this.$createElement;
-          _this.$message({
-            message: h('p',null,[
-              h('span',null, dt.message)
-            ])
+          _this.uts.post(_this.urls.SUB_ARTICLE, _this.form, res => {
+            // 错误处理
+            _this.setShow(true);
+            _this.setMsg('提交失败，请重试！');
+
+          }).then(d => {
+            let dt = d.data;
+            if(dt.status === 'success') {
+              _this.setShow(false);
+              _this.$router.push('/');
+              _this.uts.notice('success', dt.message);
+            } else {
+              _this.setShow(true);
+              _this.setMsg(dt.message);
+            }
           });
-        } else {
-          _this.msg = dt.message;
-          _this.show = true;
-        }
-      }).catch(e => {
-        console.log(e);
-      });
+
+      } else {
+        _this.setShow(true);
+        _this.setMsg('请先登录！');
+      }
     },
     onEditorBlur(editor) {
       // console.log('editor blur!', editor)
@@ -114,5 +67,58 @@ export default {
     onEditorReady(editor) {
       // console.log('editor ready!', editor)
     }
+  },
+  created() {
+    let _this = this;
+    let id = _this.$router.history.current.query.id;
+    _this.setArticleID(id);
+
+    // console.log('创建',id);
+
+
+    // 判断是否有文章ID
+    if(!id) {
+      _this.clearData();
+      _this.setLoading(false);
+    }
+
+  },
+  mounted() {
+
+    let _this = this;
+
+    // console.log('挂载之后的',_this.id);
+
+
+    // 判断是否有存储的文章数据，没有就重新获取
+    if(_this.id && _this.form.title === '') {
+
+      _this.uts.get(`${_this.urls.GET_ARTICLE}?id=${_this.id}`,{}, res => {
+        // 失败处理
+      }).then(d => {
+        let dt = d.data;
+
+        if(dt.status === 'success') {
+          _this.setLoading(false);
+          _this.assignData(dt.data);
+        }
+      })
+    }
+  },
+  updated() {
+    // let _this = this;
+    // let id = _this.$router.history.current.query.id;
+    //
+    // console.log('更新',id);
+
+  },
+  watch: {
+    id: function (val, oldVal) {
+      if(!val) this.clearData();
+    },
+    name: function(val, oldVal) {
+      // console.log(val, oldVal)
+    }
   }
+
 }

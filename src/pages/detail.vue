@@ -12,6 +12,7 @@
         <h3>
           {{article.title}}
           <el-button
+            v-show="loginName && loginName === 'admin'"
             type="danger"
             icon="el-icon-edit"
             size="small"

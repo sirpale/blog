@@ -7,7 +7,7 @@ export default {
   },
   mutations: {
     SWITCH_DIALOG(state) { // 这里的state对应上面的state
-      state.show = !state.show;
+      state.show = !state.show
     }
   },
   actions: {

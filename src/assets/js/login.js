@@ -20,7 +20,8 @@ export default {
   },
   computed : {
     ...mapState({
-      show: state => state.login.show,
+      show: state => state.gb.show,
+      dialogShow: state => state.gb.dialogShow,
       isLogin: state => state.login.isLogin,
       loginName: state => state.login.loginName,
       host: state => state.login.host,
@@ -31,34 +32,43 @@ export default {
     this.getUserInfo();
   },
   methods: {
-    ...mapActions(['switchDialog', 'setLogin', 'setName', 'setUserInfo']),
+    ...mapActions([
+      'setDialogShow',
+      'setLogin',
+      'setName',
+      'setUserInfo'
+    ]),
+    switchDialog() {
+      this.setDialogShow(!this.dialogShow);
+    },
     getUserInfo() {
-      let _this = this;
-
+      let _this = this, timer = null;
       _this.uts.get(this.urls.LOGIN,{}, res => {
-
+        // 失败处理
+        timer = setTimeout(() => {
+          _this.getUserInfo();
+        }, 2000);
       }).then(d => {
-
         let dt = d.data;
-
-        console.log(dt);
-
+        // console.log(dt);
         if(dt.status === 'success') {
           _this.setLogin(true);
           _this.setName(dt.userInfo.name);
           _this.setUserInfo(dt.userInfo);
         }
 
+        clearTimeout(timer);
       });
     },
     logout() {
       let _this = this;
 
-      _this.uts.get(_this.urls.LOGOUT).then(d => {
+      _this.uts.get(_this.urls.LOGOUT,{},res=>{}).then(d => {
         _this.setLogin(false);
 
         if(d.data.status === 'success') {
           _this.uts.notice('success',d.data.message);
+          _this.setName('');
         } else {
           _this.uts.notice('error', d.data.message);
         }
@@ -68,7 +78,7 @@ export default {
   },
   watch : {
     isLogin : function(val, oldVal) {
-      console.log(val, oldVal);
+      // console.log(val, oldVal);
     }
   }
 }

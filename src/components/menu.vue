@@ -25,7 +25,8 @@
 
 <script>
 
-  import {mapState} from 'vuex';
+  import {mapState,mapActions} from 'vuex';
+
   export default {
     data() {
       return {
@@ -38,13 +39,13 @@
         loginName:  state => state.login.loginName
       })
     },
-    mounted() {
-
-    },
+    mounted() {},
     methods: {
+      ...mapActions(['setArticleID']),
       handleSelect(key, keyPath) {},
       jumpToSubArticle() {
-        this.$router.push({path: `/sub-article/`, query: {id:null}});
+        this.setArticleID(null);
+        this.$router.push({path: `/sub-article`});
       }
     }
   }

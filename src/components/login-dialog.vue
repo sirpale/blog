@@ -2,7 +2,7 @@
   <el-dialog title=""
              top="10px"
              width="40%"
-             :visible.sync="dialogShow.show"
+             :visible="dialogShow"
              :before-close="dialogClose"
   >
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
@@ -24,7 +24,6 @@
           <el-form-item label="" :label-width="formLabelWidth">
             <p class="sub-msg red" v-if="show" ref="msg">{{ msg }}</p>
           </el-form-item>
-
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="注册" name="reg">
@@ -68,16 +67,16 @@
     name: "login-dialog",
     data() {
       return {
-        activeName : 'reg'
+        activeName : 'login'
       }
     },
     created() {},
     mounted() {},
     computed: {
       ...mapState({
-        show: state => state.login.show,
-        msg: state => state.login.msg,
-        dialogShow : state => state.dialog,
+        show: state => state.gb.show,
+        dialogShow: state => state.gb.dialogShow,
+        msg: state => state.gb.msg,
         dialogFormVisible: state => state.login.dialogFormVisible,
         form: state => state.login.form,
         formLabelWidth: state=> state.login.formLabelWidth,
@@ -85,11 +84,10 @@
         status: state => state.login.status,
         userInfo: state => state.login.userInfo
       })
-
     },
     methods: {
       ...mapActions([
-        'switchDialog',
+        'setDialogShow',
         'setShow',
         'setMsg',
         'setName',
@@ -100,17 +98,19 @@
       ]),
       handleClick() {},
       dialogClose (done) {
-        done();
+
         this.formReset();
         // 设置弹窗关闭
-        this.$store.state.dialog.show = false;
-        console.log('关闭');
+        this.setDialogShow(false);
+        this.setShow(false);
+        this.setMsg('');
+        // console.log('关闭');
+
+        done();
 
       },
       reg() {
         let _this = this;
-
-        console.log(_this.form);
 
         // 验证是否为空
         if(_this.form.name === '' ||
@@ -131,20 +131,18 @@
             let dt = d.data;
 
             if(dt.status === 'success') {
-              _this.switchDialog();
+              _this.setDialogShow(false);
               _this.setIsLogin(true);
               _this.setUserInfo(dt.data);
               _this.setStatusReg(true);
-              _this.setShow(false);
+              _this.setMsg('');
               _this.formReset();
               _this.uts.notice('success',dt.message);
-              // _this.$router.push(`/user-home/${dt.data.name}`);
-
+              _this.$router.push(`/sub-article`);
+            } else {
+              _this.setShow(true);
+              _this.setMsg(dt.message);
             }
-
-           _this.setShow(true);
-           _this.setMsg(dt.message);
-
           })
         }
 
@@ -158,7 +156,7 @@
           }).then(d => {
             let dt = d.data;
             if(dt.status === 'success') {
-              _this.switchDialog();
+              _this.setDialogShow(false);
               _this.setName(dt.data.name);
               _this.setUserInfo(dt.data);
               _this.setStatusLogin(true);
@@ -166,10 +164,11 @@
               _this.setIsLogin(true);
               _this.formReset();
               _this.uts.notice('success', dt.message);
+              // _this.$router.push(`/sub-article`);
+            } else {
+              _this.setShow(true);
+              _this.setMsg(dt.message);
             }
-
-            _this.setShow(true);
-            _this.setMsg(dt.message);
           });
         } else {
           _this.setShow(true);
@@ -180,11 +179,10 @@
       formReset() {
         this.$refs['form'].resetFields();
         this.setMsg('');
-        // this.msg.login = '';
       },
       resetForm() {
         this.$refs['form'].resetFields();
-        console.log('重置成功');
+        // console.log('重置成功');
       },
     }
   }

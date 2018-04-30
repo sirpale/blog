@@ -41,7 +41,6 @@
           <div class="quill-editor-example">
             <!-- quill-editor -->
             <quill-editor v-model="form.content"
-                          ref="myTextEditor"
                           :options="editorOption"
                           @blur="onEditorBlur($event)"
                           @focus="onEditorFocus($event)"
@@ -59,7 +58,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="subArticle">发表文章</el-button>
-          <span class="red" v-show="show">{{ this.msg }}</span>
+          <span class="red" v-show="show">{{ msg }}</span>
         </el-form-item>
       </el-form>
     </el-card>
@@ -68,6 +67,8 @@
 </template>
 <style scoped lang="scss">
 </style>
+
+
 
 <script src="@/assets/js/sub-article.js"></script>
 

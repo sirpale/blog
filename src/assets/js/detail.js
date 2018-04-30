@@ -1,4 +1,3 @@
-
 import {mapState, mapActions} from 'vuex';
 
 export default {
@@ -10,23 +9,28 @@ export default {
   },
   computed: {
     ...mapState({
-      show: state => state.article.show,
-      loading: state => state.article.loading,
-      noData: state => state.article.noData,
+      loginName: state => state.login.loginName,
+      show: state => state.gb.show,
+      loading: state => state.gb.loading,
+      noData: state => state.gb.noData,
       article: state => state.article.data
     })
   },
   methods: {
-    ...mapActions(['assignData','clearData', 'setLoading', 'setNoData', 'setShow']),
+    ...mapActions([
+      'assignData',
+      'clearData',
+      'setLoading',
+      'setNoData',
+      'setShow'
+    ]),
     jumpToEdit(idx) {
       let _this = this;
       _this.$router.push({path:'/sub-article', query:{id:idx}});
 
     }
   },
-  beforeCreate() {
-
-  },
+  beforeCreate() {},
   created() {},
   beforeMount() {
     // 数据和状态初始化
@@ -35,6 +39,9 @@ export default {
     this.clearData();
   },
   mounted() {
+
+    console.log(this.loginName);
+
     let _this = this, id = _this.$router.history.current.params.id;
     _this.uts.get(`${_this.urls.GET_ARTICLE}?id=${id}`,{}, res => {
       _this.setNoData('获取内容失败！');
@@ -62,15 +69,12 @@ export default {
     // });
 
     if(blocks && blocks.length > 0) {
-
-      console.log(blocks.length);
-
       blocks.forEach( block => {
         _this.$hljs.highlightBlock(block);
       })
     }
 
-    console.log('更新');
+    // console.log('更新');
   },
   watch : {
     article : function(val, oldVal) {}

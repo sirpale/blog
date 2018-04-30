@@ -6,9 +6,7 @@
 
 export default {
   state: {
-    loading: true,
-    show: true,
-    noData: '数据加载中',
+    idx: null,
     list: [],
     data : {
       id: null,
@@ -22,43 +20,30 @@ export default {
       createTime: '',
       hits: 0,
       postNum : 0
-    },
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],
-      [{ 'indent': '-1' }, { 'indent': '+1' }],
-      [{ 'direction': 'rtl' }],
-      [{ 'size': ['small', false, 'large', 'huge'] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'font': [] }],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
-      ['clean'],
-      ['link', 'image', 'video']
-    ]
+    }
+
   },
   mutations: {
+
+    // 设置文章ID
+    SET_ARTICLE_ID: (state, id) => {
+      state.data.id = id;
+    },
     // 获取文章列表
     SET_LIST : (state, list) => {
       state.list = list
     },
-    // 设置无数据提示信息
-    SET_NO_DATA_MSG : (state, msg) => {
-      state.noData = msg;
-    },
-    // 设置loading
-    SET_LOADING : (state, loading) => {
-      state.loading = loading
-    },
+
+
     // 设置显示
     SET_SHOW: (state, show) => {
       state.show = show;
     },
     // 合并文章数据
     ASSIGN_DATA(state, data) {
+
+      data.tags = data.tags.split(',');
+
       state.data = Object.assign(state.data, data);
     },
     // 清空数据
@@ -80,17 +65,14 @@ export default {
 
   },
   actions : {
+    setArticleID({commit}, id) {
+      commit('SET_ARTICLE_ID', id);
+    },
 
     setList({commit, rootState}, list) {
      commit('SET_LIST', list);
     },
 
-    setNoData({commit, rootState}, msg) {
-      commit('SET_NO_DATA_MSG', msg);
-    },
-    setLoading({commit}, loading) {
-      commit('SET_LOADING', loading);
-    },
     clearData({commit}) {
       commit('CLEAR_DATA');
     },

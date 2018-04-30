@@ -8,7 +8,7 @@
 import axios from 'axios';
 import {Message, Notification} from 'element-ui';
 
-export default {
+const Utils = {
 
   /**
    * get请求
@@ -16,6 +16,7 @@ export default {
    * @param {string} url [地址]
    * @param {object} data [数据]
    *
+   * @param {function} cb [回调函数]
    * */
 
    get(url,data,cb) {
@@ -43,10 +44,12 @@ export default {
    * @DateTime 2018-4-29
    * @param {string} url [地址]
    * @param {object} data [数据]
-   * @param {object} options 扩展
+   *
+   * @param {object} options [扩展设计]
+   * @param {function} cb [回调函数]
    * */
 
-   post(url, data, options = {}) {
+   post(url, data, cb, options={}) {
     if(!url) {
       console.error('没有请求地址');
       return false;
@@ -59,6 +62,7 @@ export default {
     }, options)).then(res => {
       return Promise.resolve(res);
     }, res => {
+      if(cb) cb(res);
       return Promise.reject(res);
     }).catch( e => {
       console.log(e);
@@ -108,6 +112,47 @@ export default {
       duration: 2000
 
     })
-  }
+  },
 
-}
+  /**
+   * 小于10前面补0
+   * @Date 2018-4-29
+   * @param {number} num [要转换的数据]
+   * */
+  formatDigit(num) {
+    return num.toString().replace(/^(\d)$/, '0$1');
+  },
+
+  /**
+   * 时间格式化
+   * @Date 2018-4-29
+   * @param {number} timestamp [时间戳]
+   * @param {string} formats [格式] Y-M-D/Y-M-D h:m:s/Y年M月D日/Y年M月D日 h时m分/Y年M月D日 h时m分s秒
+   * 示例：console.log(formatDate(1500305226034, 'Y年M月D日 h:m:s')) ==> 2017年07月17日 23:27:06
+   *  */
+
+  formatDate : (timestamp, formats = 'Y-M-D') => {
+
+    let myDate = timestamp ? new Date(timestamp) : new Date();
+
+    let year = myDate.getFullYear();
+    let month = Utils.formatDigit(myDate.getMonth() + 1);
+    let day = Utils.formatDigit(myDate.getDate());
+    let hour = Utils.formatDigit(myDate.getHours());
+    let minute = Utils.formatDigit(myDate.getMinutes());
+    let second = Utils.formatDigit(myDate.getSeconds());
+
+    return formats.replace(/[YMDhms]/g, matches => {
+        return ({
+          Y: year,
+          M: month,
+          D: day,
+          h:hour,
+          m: minute,
+          s: second
+        })[matches]
+    });
+  }
+};
+
+export default Utils;

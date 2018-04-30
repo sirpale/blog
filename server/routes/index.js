@@ -1,4 +1,6 @@
 const crypto = require('crypto');
+const htmlEscaper = require('html-escaper');
+
 
 // const User =  require('../controller/user');
 const User  = require('../controller/user');
@@ -9,6 +11,14 @@ module.exports = app => {
   // 主页
   app.get('/',(req, res, next) => {
 
+    res.render('index.html', {
+      title: '首页'
+    })
+
+  });
+
+  // 获取文章列表
+  app.get('/getArticleList',(req, res, next) => {
     let user = new User({});
     let info = {
       status: 'error',
@@ -25,27 +35,32 @@ module.exports = app => {
         if(rs.length > 0) {
           for(let i=0;i<rs.length;i++) {
             rs[i]['id'] = rs[i]['article_id'];
-            rs[i]['content'] = decodeURI(rs[i]['content']);
+            rs[i]['content'] = htmlEscaper.unescape(rs[i]['content']);
             // rs[i]['content'] = rs[i]['content'];
-            rs[i]['intro'] = decodeURI(rs[i]['intro']).replace(/<[^<>]+>/g,'');
+            rs[i]['intro'] = htmlEscaper.unescape(rs[i]['intro']).replace(/<[^<>]+>/g,'');
             // rs[i]['intro'] = rs[i]['intro'].replace(/<[^<>]+>/g,'');
             rs[i]['createTime'] = Dte.timeStampToTime(rs[i]['create_time']);
             rs[i]['postNum'] = rs[i]['post_num'];
           }
+
+          user.getArticleTotal((err, s) => {
+
+            info = {
+              status : 'success',
+              message: '获取文章成功！',
+              data: rs,
+              total: s['count(article_id)']
+            };
+
+            res.send(info);
+
+          });
         }
 
 
-        info = {
-          status : 'success',
-          message: '获取文章成功！',
-          data: rs
-        };
-
-        res.send(info);
       }
 
     });
-
   });
 
 
@@ -132,7 +147,7 @@ module.exports = app => {
   // 获取用户信息
   app.get('/login',(req, res, next) => {
 
-    console.log('获取用户session信息：',req.session.user);
+    // console.log('获取用户session信息：',req.session.user);
 
     if(req.session.user) {
        return res.send({
@@ -144,7 +159,10 @@ module.exports = app => {
 
     res.send({status: 'error', message: '未登录'})
 
+
   });
+
+
 
 
   // 登录提交
@@ -211,21 +229,24 @@ module.exports = app => {
       message: '提交失败！'
     };
 
-    // console.log(req.session.user.name);
+    console.log(req.body.id);
+
+    console.log(req.session.user);
+
     if(req.session.user.name) {
 
       let reg = /<[^<>]+>/g;
 
       // let rContent = encodeURIComponent(req.body.content),
-      let rContent = encodeURI((req.body.content).toString()),
+      // let rContent = encodeURI((req.body.content).toString()),
+      let rContent = htmlEscaper.escape(req.body.content),
         rTitle = req.body.title,
         rAuthor = req.session.user.name,
         rIsSHow = req.body.isShow,
         rTags = req.body.tags,
         rIntro = req.body.intro;
 
-
-      console.log(rContent);
+      // console.log(rContent);
       let article = {
         author: rAuthor,
         title: rTitle,
@@ -236,19 +257,37 @@ module.exports = app => {
         intro : rIntro ? rIntro : rContent.substring(0, 100).replace(reg,'')
       };
 
+      if(req.body.id) {
+        article.id = req.body.id;
+        user.modifyArticle(article,(err, rs) => {
 
-      user.saveArticle(article,(err, rs) => {
+          if(rs) {
+            info = {
+              status: 'success',
+              message: '文章修改成功！'
+            }
+          }
 
-        if(rs) {
-          info = {
-            status: 'success',
-            message: '文章发表成功！'
-          };
-        }
+          res.send(info);
 
-       res.send(info);
+        });
 
-      });
+      } else {
+        user.saveArticle(article,(err, rs) => {
+          if(rs) {
+            info = {
+              status: 'success',
+              message: '文章发表成功！'
+            };
+          }
+
+         res.send(info);
+
+        });
+      }
+
+
+
     } else {
       res.send({status:'error',message:'未登录'});
     }
@@ -271,9 +310,9 @@ module.exports = app => {
 
       user.getArticleId(aid, (err, rs) => {
         rs[0]['id'] = rs[0]['article_id'];
-        rs[0]['content'] = decodeURI(rs[0]['content']);
+        rs[0]['content'] = htmlEscaper.unescape(rs[0]['content']);
         // rs[0]['content'] = rs[0]['content'];
-        rs[0]['intro'] = decodeURI(rs[0]['intro']).replace(/<[^<>]+>/g,'');
+        rs[0]['intro'] = htmlEscaper.unescape(rs[0]['intro']).replace(/<[^<>]+>/g,'');
         // rs[0]['intro'] = rs[0]['intro'].replace(/<[^<>]+>/g,'');
         rs[0]['isShow'] = rs[0]['is_show'] === 1;
         rs[0]['createTime'] = Dte.timeStampToTime(rs[0]['create_time']);

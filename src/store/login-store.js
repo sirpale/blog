@@ -1,7 +1,11 @@
+/**
+ * @Author Sirpale
+ * @Description 登录数据
+ * @Date Created in 2018\4\29 0029
+ */
+
 export default {
   state : {
-    show: false,
-    msg: '提交失败',
     isLogin : false,
     loginName: '',
     dialogFormVisible: false,
@@ -26,13 +30,6 @@ export default {
     }
   },
   mutations: {
-
-    SET_SHOW(state, show) {
-      state.show = show;
-    },
-    SET_MSG(state, msg) {
-      state.msg = msg;
-    },
     SET_LOGIN(state, login) {
       state.isLogin = login
     },
@@ -51,15 +48,9 @@ export default {
     SET_STATUS_REG(state, reg) {
       state.status.reg = reg;
     }
-
   },
   actions: {
-    setShow({commit}, show) {
-      commit('SET_SHOW', show);
-    },
-    setMsg({commit}, msg) {
-      commit('SET_MSG', msg);
-    },
+
     setLogin({commit},login) {
       commit('SET_LOGIN', login);
     },
