@@ -12,7 +12,10 @@ export default {
     dialogShow: false,
     msg: '提示信息',
     noData: '数据加载中',
-    isDisabled: true
+    isDisabled: true,
+    // 验证码地址
+    codeUrl: 'http://127.0.0.1:3000/code',
+    code:''
   },
   mutations: {
     // 设置loading
@@ -38,8 +41,11 @@ export default {
     // 设置按钮状态
     SET_IS_DISABLED : (state, dis) => {
       state.isDisabled = dis;
+    },
+    // 设置验证码
+    SET_CODE : (state, code) => {
+      state.code = code;
     }
-
   },
   actions: {
     setLoading({commit}, loading) {
@@ -59,6 +65,11 @@ export default {
     },
     setIsDisabled({commit}, dis) {
       commit('SET_IS_DISABLED', dis);
+    },
+    setCode({commit,rootState},code) {
+
+      code = `${code}?n=${Math.floor(Math.random()*10000)}`;
+      commit('SET_CODE', code);
     }
 
   },

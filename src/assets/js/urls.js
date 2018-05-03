@@ -6,7 +6,7 @@
  */
 
 
-const API = '';
+const API = '/api';
 
 export default {
   // 首页 num为文章显示数

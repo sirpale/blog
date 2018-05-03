@@ -10,6 +10,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
+
+const Routes = require('./routes').routes
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
@@ -57,6 +62,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true
     }),
+    // new PrerenderSPAPlugin({
+    //   staticDir: path.join(__dirname, '../dist'),
+    //   routes: Routes,
+    //   renderer: new Renderer({
+    //     inject: {
+    //       foo: 'bar'
+    //     },
+    //     headless: false,
+    //     renderAfterDocumentEvent: 'render-event'
+    //   })
+    // }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

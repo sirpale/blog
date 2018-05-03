@@ -1,6 +1,14 @@
 import {mapState, mapActions} from 'vuex';
 export default {
   name: "home",
+  metaInfo: {
+    title: '盛吉祥的博客-首页',
+    meta: [{
+      name: 'keywords',
+      content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+    }]
+
+  },
   components: {},
   data() {
     return {

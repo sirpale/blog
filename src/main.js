@@ -8,6 +8,8 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import metaInfo from 'vue-meta-info'
+
 
 import Utils from './assets/js/utils'
 import Urls from './assets/js/urls'
@@ -28,10 +30,11 @@ import 'highlight.js/styles/default.css'
 
 import '@/assets/css/base.scss';
 
-
+Vue.use(metaInfo);
 Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.use(vueQuillEditor);
+
 
 let Hub = new Vue();
 

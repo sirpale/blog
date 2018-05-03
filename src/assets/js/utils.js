@@ -102,14 +102,13 @@ const Utils = {
         default: title ='成功';
       }
     }
-
-
-
     Notification({
       type: type,
       title: title,
       message: msg,
-      duration: 2000
+      duration: 2000,
+      position:'bottom-right',
+      offset: ''
 
     })
   },

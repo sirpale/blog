@@ -1,7 +1,7 @@
 <template>
   <el-dialog title=""
              top="10px"
-             width="40%"
+             width="400px"
              :visible="dialogShow"
              :before-close="dialogClose"
   >
@@ -15,7 +15,8 @@
             <el-input v-model.trim="form.password" auto-complete="off" type="password" />
           </el-form-item>
           <el-form-item label="验证码：" :label-width="formLabelWidth" prop="code">
-            <el-input v-model.trim="form.code"  auto-complete="off"  style="width:50%;"/>
+            <el-input v-model.trim="form.code"  auto-complete="off"  style="width:40%;float:left;"/>
+            <img class="yzm" @click="randomCode" :src="code" style="width:50%;height:40px;display:block;float:right;" alt="">
           </el-form-item>
           <el-form-item label="" :label-width="formLabelWidth">
             <el-button type="primary" @click="login" :disabled="isDisabled">登录</el-button>
@@ -44,7 +45,8 @@
             <el-input v-model.trim="form.answer" auto-complete="off" />
           </el-form-item>
           <el-form-item label="验证码：" :label-width="formLabelWidth" prop="code">
-            <el-input v-model.trim="form.code"  auto-complete="off"  style="width:50%;"/>
+            <el-input v-model.trim="form.code"  auto-complete="off"  style="width:40%;float:left;"/>
+            <img class="yzm" @click="randomCode" :src="code" style="width:50%;height:40px;display:block;float:right;" alt="">
           </el-form-item>
           <el-form-item label="" :label-width="formLabelWidth">
             <el-button type="success" @click="reg">注册</el-button>
@@ -59,135 +61,8 @@
   </el-dialog>
 </template>
 
-<script>
+<script src="@/assets/js/login-dialog.js"></script>
 
-  import {mapState, mapActions} from 'vuex';
-
-  export default {
-    name: "login-dialog",
-    data() {
-      return {
-        activeName : 'login'
-      }
-    },
-    created() {},
-    mounted() {},
-    computed: {
-      ...mapState({
-        show: state => state.gb.show,
-        dialogShow: state => state.gb.dialogShow,
-        msg: state => state.gb.msg,
-        dialogFormVisible: state => state.login.dialogFormVisible,
-        form: state => state.login.form,
-        formLabelWidth: state=> state.login.formLabelWidth,
-        isDisabled: state => state.login.isDisabled,
-        status: state => state.login.status,
-        userInfo: state => state.login.userInfo
-      })
-    },
-    methods: {
-      ...mapActions([
-        'setDialogShow',
-        'setShow',
-        'setMsg',
-        'setName',
-        'setUserInfo',
-        'setStatusLogin',
-        'setStatusReg',
-        'setIsLogin'
-      ]),
-      handleClick() {},
-      dialogClose (done) {
-
-        this.formReset();
-        // 设置弹窗关闭
-        this.setDialogShow(false);
-        this.setShow(false);
-        this.setMsg('');
-        // console.log('关闭');
-
-        done();
-
-      },
-      reg() {
-        let _this = this;
-
-        // 验证是否为空
-        if(_this.form.name === '' ||
-          _this.form.password === '' ||
-          _this.form.repassword === '' ||
-          _this.form.question === '' ||
-          _this.form.answer === ''
-        ) {
-          _this.setShow(true);
-          _this.setMsg('以上内容不得为空');
-
-        } else {
-
-          _this.uts.post(_this.urls.REG,_this.form, res => { // 失败处理
-            _this.setShow(true);
-            _this.setMsg('注册失败，请稍后重试');
-          }).then( d => {
-            let dt = d.data;
-
-            if(dt.status === 'success') {
-              _this.setDialogShow(false);
-              _this.setIsLogin(true);
-              _this.setUserInfo(dt.data);
-              _this.setStatusReg(true);
-              _this.setMsg('');
-              _this.formReset();
-              _this.uts.notice('success',dt.message);
-              _this.$router.push(`/sub-article`);
-            } else {
-              _this.setShow(true);
-              _this.setMsg(dt.message);
-            }
-          })
-        }
-
-      },
-      login() {
-        let _this = this;
-
-        if(_this.form.name !== '' && _this.form.password !== '') {
-          _this.uts.post(_this.urls.LOGIN,_this.form, res => {
-
-          }).then(d => {
-            let dt = d.data;
-            if(dt.status === 'success') {
-              _this.setDialogShow(false);
-              _this.setName(dt.data.name);
-              _this.setUserInfo(dt.data);
-              _this.setStatusLogin(true);
-              _this.setShow(false);
-              _this.setIsLogin(true);
-              _this.formReset();
-              _this.uts.notice('success', dt.message);
-              // _this.$router.push(`/sub-article`);
-            } else {
-              _this.setShow(true);
-              _this.setMsg(dt.message);
-            }
-          });
-        } else {
-          _this.setShow(true);
-          _this.setMsg('用户名不得为空！');
-        }
-      },
-      // 表单重置
-      formReset() {
-        this.$refs['form'].resetFields();
-        this.setMsg('');
-      },
-      resetForm() {
-        this.$refs['form'].resetFields();
-        // console.log('重置成功');
-      },
-    }
-  }
-</script>
-
-<style scoped>
+<style scoped lang="scss">
 
 </style>

@@ -5,12 +5,13 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
-
+const MySQLStore = require('express-mysql-session')(session);
+const config = require('./db/config');
 const route = require('./routes/index');
 
+const sessionStore = new MySQLStore(Object.assign(config,{}));
+
 const app = express();
-
-
 
 // view engine setup
 // 修改默认引擎
@@ -25,20 +26,21 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('sirpale'));
 app.use(session({
+  key: 'blog',
+  cookie: {
+    maxAge: 6 * 60 * 60 * 1000
+  },
   resave: false,
   secret: 'sirpale',
-  saveUninitialized: true
+  saveUninitialized: false,
+  store: sessionStore
 }));
 
 
 route(app);
 
 // app.use(multer());
-
-
 app.use(express.static(path.join(__dirname, '/')));
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

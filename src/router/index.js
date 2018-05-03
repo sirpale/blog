@@ -86,7 +86,7 @@ const router = new Router({
 
 router.afterEach(function(to, from){
 
-  document.title = '盛吉祥的博客-' + to.meta.title || '盛吉祥的博客';
+  // document.title = '盛吉祥的博客-' + to.meta.title || '盛吉祥的博客';
   // document.querySelector('meta[name="keyword"]').setAttribute('content','keywords');
   // document.querySelector('meta[name="description"]').setAttribute('content','description');
 });

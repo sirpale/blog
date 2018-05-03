@@ -1,24 +1,45 @@
 const crypto = require('crypto');
 const htmlEscaper = require('html-escaper');
 
+const ccap = require('ccap')({
+  width: 256,//set width,default is 256
+  height: 60,//set height,default is 60
+  offset: 40,//set text spacing,default is 40
+  quality: 100,//set pic quality,default is 50
+  generate: function () {//Custom the function to generate captcha text
+
+    //generate captcha text here
+
+    let str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let newStr = '', max = 4;
+    let arr = str.split('');
+
+    for (let i = 0; i < max; i++) {
+      newStr += arr[Math.round(Math.random() * (arr.length - 1))];
+    }
+    return newStr;//return the captcha text
+
+  }
+});
 
 // const User =  require('../controller/user');
-const User  = require('../controller/user');
+const User = require('../controller/user');
 const Dte = require('../utils/date');
 
 module.exports = app => {
-
   // 主页
-  app.get('/',(req, res, next) => {
+  app.get('/', (req, res, next) => {
+
+    req.session.yzm = '12345';
 
     res.render('index.html', {
       title: '首页'
-    })
+    });
 
   });
 
   // 获取文章列表
-  app.get('/getArticleList',(req, res, next) => {
+  app.get('/getArticleList', (req, res, next) => {
     let user = new User({});
     let info = {
       status: 'error',
@@ -29,15 +50,15 @@ module.exports = app => {
 
     // console.log(user);
 
-    user.getArticle(articleNum,(err, rs) => {
+    user.getArticle(articleNum, (err, rs) => {
 
-      if(rs) {
-        if(rs.length > 0) {
-          for(let i=0;i<rs.length;i++) {
+      if (rs) {
+        if (rs.length > 0) {
+          for (let i = 0; i < rs.length; i++) {
             rs[i]['id'] = rs[i]['article_id'];
             rs[i]['content'] = htmlEscaper.unescape(rs[i]['content']);
             // rs[i]['content'] = rs[i]['content'];
-            rs[i]['intro'] = htmlEscaper.unescape(rs[i]['intro']).replace(/<[^<>]+>/g,'');
+            rs[i]['intro'] = htmlEscaper.unescape(rs[i]['intro']).replace(/<[^<>]+>/g, '');
             // rs[i]['intro'] = rs[i]['intro'].replace(/<[^<>]+>/g,'');
             rs[i]['createTime'] = Dte.timeStampToTime(rs[i]['create_time']);
             rs[i]['postNum'] = rs[i]['post_num'];
@@ -46,7 +67,7 @@ module.exports = app => {
           user.getArticleTotal((err, s) => {
 
             info = {
-              status : 'success',
+              status: 'success',
               message: '获取文章成功！',
               data: rs,
               total: s['count(article_id)']
@@ -63,33 +84,59 @@ module.exports = app => {
     });
   });
 
+  // 验证码
+  app.get('/code', (req, res, next) => {
+    const CCAP = ccap.get();
+    // 存入session
+    req.session.CCAP = CCAP[0];
+    res.end(CCAP[1]);
+  });
 
   // 注册
   app.post('/reg', (req, res, next) => {
-    // origin(res);
 
-    console.log('参数：');
-    console.log(req.body);
 
     let info = {
-      status : 'error',
-      message : '无返回信息'
+      status: 'error',
+      message: '无返回信息'
     };
 
-    // 过滤掉Options请求
-    if(req.method === 'POST') {
+    // 请求过来的数据
+    let user = {
+      name: req.body.name,
+      password: req.body.password,
+      repassword: req.body.repassword,
+      question: req.body.question,
+      answer: req.body.answer,
+      code: req.body.code
+    };
 
-      if (req.body.password === req.body.repassword) {
+    // 判断注册信息是否完整
+    if (
+      user.name &&
+      user.password &&
+      user.question &&
+      user.answer &&
+      user.password === user.repassword &&
+      user.code
+    ) {
 
-        // 请求过来的数据
-        let user = {
-          name: req.body.name,
-          password: req.body.password,
-          question: req.body.question,
-          answer: req.body.answer
-        };
+      // 判断验证码是否正确
+      req.sessionStore.all((err, rs) => {
+        let codeKey = '', code = '';
+        for (let i in rs) {
+          let k = rs[i]['CCAP'];
+          if (k && k !== '') {
+            codeKey = i;
+            code = k;
+          }
+        }
 
-        // console.log(user);
+        if (user.code !== code) {
+          info.message = '验证码错误';
+          return res.send(info);
+        }
+
         // 密码加密
         let md5 = crypto.createHash('md5');
         let cryPwd = md5.update(user.password).digest('hex');
@@ -101,33 +148,29 @@ module.exports = app => {
           answer: user.answer
         });
 
+        // 判断用户名是否重复
+        newUser.get(newUser.name, (err, rs) => {
 
-        newUser.get(newUser.name,(err, rs) => {
-          // console.log('获取时的错误信息：' + err);
-
-          if(rs) {
+          if (rs) {
             info.message = '注册失败，该用户名已被注册!';
             return res.send(info);
           }
 
           newUser.save((error, user) => {
-            if(error) {
+            if (error) {
               info.message = `注册失败！错误信息：${error.code}`;
               return res.send(info);
             }
 
             req.session.user = {
-              name : user.name
+              name: user.name
             };
-
-            // console.log('赋值后的：');
-            // console.log(req.session);
 
             info = {
               status: 'success',
               message: '注册成功！',
               data: {
-                name : user.name
+                name: user.name
               }
             };
 
@@ -137,23 +180,21 @@ module.exports = app => {
 
         });
 
-      }
-    } else {
-      res.send({status: 200});
+      });
+
     }
 
   });
 
   // 获取用户信息
-  app.get('/login',(req, res, next) => {
+  app.get('/login', (req, res, next) => {
 
     // console.log('获取用户session信息：',req.session.user);
-
-    if(req.session.user) {
-       return res.send({
-        status:'success',
+    if (req.session.user) {
+      return res.send({
+        status: 'success',
         message: '已登录！',
-        userInfo : req.session.user
+        userInfo: req.session.user
       })
     }
 
@@ -162,69 +203,77 @@ module.exports = app => {
 
   });
 
-
-
-
   // 登录提交
-
-  app.post('/login',(req, res, next) => {
-
-
+  app.post('/login', (req, res, next) => {
     let info = {
       status: 'error',
       message: '暂无返回值'
     };
 
+    // 判断用户名和密码、验证码是否为空
+    if (req.body.name && req.body.password && req.body.code) {
 
-    if(req.body.name && req.body.password) {
+      // 查找session表里是否存在验证码
+      req.sessionStore.all((err, rs) => {
+        let codeKey = '', code = '';
+        for (let i in rs) {
+          let k = rs[i]['CCAP'];
+          if (k && k !== '') {
+            codeKey = i;
+            code = k.toLowerCase();
+          }
+        }
 
-      let md5 = crypto.createHash('md5');
-      let pwd = md5.update(req.body.password).digest('hex');
+        if (req.body.code !== code) {
+          info['message'] = '验证码错误！';
+          return res.send(info);
+        }
 
-      let user = new User( {
-        name: req.body.name,
-        password: pwd
-      });
+        let md5 = crypto.createHash('md5');
+        let pwd = md5.update(req.body.password).digest('hex');
 
-      user.get(user.name,(err, rs) => {
-        if(rs && rs.password === pwd) {
+        let user = new User({
+          name: req.body.name,
+          password: pwd
+        });
+
+        user.get(user.name, (err, rs) => {
+          if (!rs || rs.name !== user.name || rs.password !== pwd) {
+            info['message'] = '登录失败，用户名或密码不正确！';
+            return res.send(info);
+          }
           info = {
             status: 'success',
             message: '登录成功',
-            data : {
-              name : rs.name
+            data: {
+              name: rs.name
             }
           };
-
           req.session.user = {
-            name : rs.name
-          }
+            name: rs.name
+          };
+          return res.send(info);
+        });
 
-          // console.log(req.session);
-
-        }  else {
-          info.message = '登录失败，用户名或密码不正确！';
-        }
-
-        return res.send(info);
       });
+
     }
 
   });
 
 
   // 登出
-  app.get('/logout',(req, res, next) => {
+  app.get('/logout', (req, res, next) => {
     req.session.user = null;
-    res.send({status: 'success',message: '退出成功！'});
+    res.send({status: 'success', message: '退出成功！'});
   });
 
 
   // 发表文章
-  app.post('/subarticle',(req, res, next) => {
+  app.post('/subarticle', (req, res, next) => {
     let user = new User({});
 
-    let info ={
+    let info = {
       status: 'error',
       message: '提交失败！'
     };
@@ -233,7 +282,7 @@ module.exports = app => {
 
     console.log(req.session.user);
 
-    if(req.session.user.name) {
+    if (req.session.user.name) {
 
       let reg = /<[^<>]+>/g;
 
@@ -254,14 +303,14 @@ module.exports = app => {
         isShow: rIsSHow === true ? 1 : 0,
         tags: rTags.join(','),
         createTime: Date.now(),
-        intro : rIntro ? rIntro : rContent.substring(0, 100).replace(reg,'')
+        intro: rIntro ? rIntro : rContent.substring(0, 100).replace(reg, '')
       };
 
-      if(req.body.id) {
+      if (req.body.id) {
         article.id = req.body.id;
-        user.modifyArticle(article,(err, rs) => {
+        user.modifyArticle(article, (err, rs) => {
 
-          if(rs) {
+          if (rs) {
             info = {
               status: 'success',
               message: '文章修改成功！'
@@ -273,30 +322,29 @@ module.exports = app => {
         });
 
       } else {
-        user.saveArticle(article,(err, rs) => {
-          if(rs) {
+        user.saveArticle(article, (err, rs) => {
+          if (rs) {
             info = {
               status: 'success',
               message: '文章发表成功！'
             };
           }
 
-         res.send(info);
+          res.send(info);
 
         });
       }
 
 
-
     } else {
-      res.send({status:'error',message:'未登录'});
+      res.send({status: 'error', message: '未登录'});
     }
 
   });
 
 
   // 获取文章详情
-  app.get('/getArticle',(req, res, next) => {
+  app.get('/getArticle', (req, res, next) => {
 
     let user = new User({});
     let info = {
@@ -306,13 +354,13 @@ module.exports = app => {
 
     let aid = req.query.id;
 
-    if(aid) {
+    if (aid) {
 
       user.getArticleId(aid, (err, rs) => {
         rs[0]['id'] = rs[0]['article_id'];
         rs[0]['content'] = htmlEscaper.unescape(rs[0]['content']);
         // rs[0]['content'] = rs[0]['content'];
-        rs[0]['intro'] = htmlEscaper.unescape(rs[0]['intro']).replace(/<[^<>]+>/g,'');
+        rs[0]['intro'] = htmlEscaper.unescape(rs[0]['intro']).replace(/<[^<>]+>/g, '');
         // rs[0]['intro'] = rs[0]['intro'].replace(/<[^<>]+>/g,'');
         rs[0]['isShow'] = rs[0]['is_show'] === 1;
         rs[0]['createTime'] = Dte.timeStampToTime(rs[0]['create_time']);
@@ -322,7 +370,7 @@ module.exports = app => {
         info = {
           status: 'success',
           message: '获取成功！',
-          data : rs[0]
+          data: rs[0]
         };
 
         res.send(info);
