@@ -51,7 +51,7 @@
   .detail-content {
     padding: 20px;
     overflow:hidden;
-    h3 {height:40px;line-height:40px;font-size:20px;}
+    h3 {line-height:40px;padding-bottom:10px;font-size:20px;}
     span.author {padding: 10px 0;display:block;height:30px;line-height:30px;border-top:1px solid #e6e6e6;}
     .intro {border:1px solid #e6e6e6;background:#f9f9f9;padding:10px;line-height:24px;color:#666;}
     .content {padding: 20px 0;font-size:14px;line-height:26px;}

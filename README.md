@@ -68,6 +68,10 @@ nodemon app
 > 2018年5月3日
 - 增加验证码
 
+> 2018年5月4日
+- 登录和注册优化
+- 个人中心路由
+
 [在线浏览](http://www.sjx666666.com/)
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

@@ -112,77 +112,81 @@ module.exports = app => {
     };
 
     // 判断注册信息是否完整
-    if (
-      user.name &&
-      user.password &&
-      user.question &&
-      user.answer &&
-      user.password === user.repassword &&
-      user.code
+    if (user.name === '' ||
+      user.password === '' ||
+      user.question === '' ||
+      user.answer === '' ||
+      user.repassword === '' ||
+      user.code === ''
     ) {
+      info.message = '以上内容不得为空！';
+      return res.send(info);
+    }
 
-      // 判断验证码是否正确
-      req.sessionStore.all((err, rs) => {
-        let codeKey = '', code = '';
-        for (let i in rs) {
-          let k = rs[i]['CCAP'];
-          if (k && k !== '') {
-            codeKey = i;
-            code = k;
-          }
+    // 判断验证码是否正确
+    req.sessionStore.all((err, rs) => {
+      let codeKey = '', code = '';
+
+      console.log(rs);
+
+      for (let i in rs) {
+        let k = rs[i]['CCAP'];
+        if (k && k !== '') {
+          codeKey = i;
+          code = k.toLowerCase();
         }
+      }
 
-        if (user.code !== code) {
-          info.message = '验证码错误';
+      if (user.code !== code) {
+        info.message = '验证码错误';
+        return res.send(info);
+      }
+
+      // 密码加密
+      let md5 = crypto.createHash('md5');
+      let cryPwd = md5.update(user.password).digest('hex');
+
+      let newUser = new User({
+        name: user.name,
+        password: cryPwd,
+        question: user.question,
+        answer: user.answer
+      });
+
+      // 判断用户名是否重复
+      newUser.get(newUser.name, (err, rs) => {
+
+
+        if (rs) {
+          info.message = '注册失败，该用户名已被注册!';
           return res.send(info);
         }
 
-        // 密码加密
-        let md5 = crypto.createHash('md5');
-        let cryPwd = md5.update(user.password).digest('hex');
-
-        let newUser = new User({
-          name: user.name,
-          password: cryPwd,
-          question: user.question,
-          answer: user.answer
-        });
-
-        // 判断用户名是否重复
-        newUser.get(newUser.name, (err, rs) => {
-
-          if (rs) {
-            info.message = '注册失败，该用户名已被注册!';
+        newUser.save((error, user) => {
+          if (error) {
+            info.message = `注册失败！错误信息：${error.code}`;
             return res.send(info);
           }
 
-          newUser.save((error, user) => {
-            if (error) {
-              info.message = `注册失败！错误信息：${error.code}`;
-              return res.send(info);
-            }
+          req.session.user = {
+            name: user.name
+          };
 
-            req.session.user = {
+          info = {
+            status: 'success',
+            message: '注册成功！',
+            data: {
               name: user.name
-            };
+            }
+          };
 
-            info = {
-              status: 'success',
-              message: '注册成功！',
-              data: {
-                name: user.name
-              }
-            };
-
-            return res.send(info);
-
-          });
+          return res.send(info);
 
         });
 
       });
 
-    }
+    });
 
   });
 

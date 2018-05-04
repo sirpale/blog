@@ -7,7 +7,15 @@ import Net from '@/pages/net';
 import Tool from '@/pages/tool';
 import Message from '@/pages/message';
 
-import UserHome from '@/pages/user/user-home';
+import User from '@/pages/user/user';
+import UserHome from '@/pages/user/home';
+import UserArticle from '@/pages/user/article';
+import UserCollect from '@/pages/user/collect';
+import UserMessage from '@/pages/user/message';
+import UserSet from '@/pages/user/set';
+
+
+
 import SubArticle from '@/pages/sub-article';
 import Detail from '@/pages/detail';
 
@@ -57,9 +65,15 @@ const router = new Router({
       }
     },
     {
-      path: '/user-home/:name',
-      name: 'User-home',
-      component: UserHome,
+      path: '/user/:id',
+      component: User,
+      children: [
+        {path: '', component: UserHome},
+        {path:'article', component:UserArticle},
+        {path:'collect',component:UserCollect},
+        {path:'message', component:UserMessage},
+        {path:'set', component:UserSet}
+      ],
       meta: {
         title: '个人中心-首页'
       }

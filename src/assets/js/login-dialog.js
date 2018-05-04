@@ -67,33 +67,43 @@ export default {
         _this.form.repassword === '' ||
         _this.form.question === '' ||
         _this.form.answer === '' ||
-        _this.form.code
+        _this.form.code === ''
       ) {
         _this.setShow(true);
         _this.setMsg('以上不得为空');
 
       } else {
 
-        _this.uts.post(_this.urls.REG,_this.form, res => { // 失败处理
-          _this.setShow(true);
-          _this.setMsg('注册失败，请稍后重试');
-        }).then( d => {
-          let dt = d.data;
-
-          if(dt.status === 'success') {
-            _this.setDialogShow(false);
-            _this.setIsLogin(true);
-            _this.setUserInfo(dt.data);
-            _this.setStatusReg(true);
-            _this.setMsg('');
-            _this.formReset();
-            _this.uts.notice('success',dt.message);
-            _this.$router.push(`/sub-article`);
-          } else {
+        if(_this.form.password === _this.form.repassword) {
+          _this.uts.post(_this.urls.REG,_this.form, res => { // 失败处理
             _this.setShow(true);
-            _this.setMsg(dt.message);
-          }
-        })
+            _this.setMsg('注册失败，请稍后重试');
+          }).then( d => {
+            let dt = d.data;
+
+            if(dt.status === 'success') {
+              _this.setDialogShow(false);
+              _this.setIsLogin(true);
+              _this.setUserInfo(dt.data);
+              _this.setStatusReg(true);
+              _this.setMsg('');
+              _this.formReset();
+              _this.uts.notice('success',dt.message);
+              _this.$router.push(`/sub-article`);
+            } else {
+              _this.setShow(true);
+              _this.setMsg(dt.message);
+            }
+          });
+
+          _this.setCode(this.codeUrl);
+        } else {
+
+          _this.setShow(true);
+          _this.setMsg('确认密码和密码不一致！');
+        }
+
+
       }
 
     },
@@ -116,10 +126,11 @@ export default {
             _this.uts.notice('success', dt.message);
             // _this.$router.push(`/sub-article`);
           } else {
-            _this.setCode(this.codeUrl);
             _this.setShow(true);
             _this.setMsg(dt.message);
           }
+
+          _this.setCode(this.codeUrl);
         });
       } else {
         _this.setShow(true);

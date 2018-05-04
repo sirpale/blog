@@ -6,7 +6,7 @@
 
     <span class="login-after" v-show="isLogin">
        <a @click="logout" href="javascript:void(0);"> | [退出登录]</a>
-      <router-link :to="{path:`/user-home/${userInfo.name}`}" ><b>{{userInfo.name}}</b></router-link>
+      <router-link :to="{path:`/user/${userInfo.name}`}" ><b>{{userInfo.name}}</b></router-link>
       <!--<a href="javascript:void(0);" @click="jumpToUser(userInfo.name)">-->
         <!---->
       <!--</a>-->
