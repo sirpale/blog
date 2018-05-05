@@ -124,10 +124,12 @@ module.exports = app => {
       return res.send(info);
     }
 
+    console.log(user);
+
     // 判断验证码是否正确
     req.sessionStore.all((err, rs) => {
       let codeKey = '', code = '';
-
+      console.log('=====131=====');
       console.log(rs);
 
       for (let i in rs) {
@@ -137,6 +139,8 @@ module.exports = app => {
           code = k.toLowerCase();
         }
       }
+
+      console.log(user.code, code);
 
       if (user.code !== code) {
         info.message = '验证码错误';
