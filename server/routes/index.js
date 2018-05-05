@@ -56,6 +56,7 @@ module.exports = app => {
         if (rs.length > 0) {
           for (let i = 0; i < rs.length; i++) {
             rs[i]['id'] = rs[i]['article_id'];
+            rs[i]['title'] = htmlEscaper.unescape(rs[i]['title']);
             rs[i]['content'] = htmlEscaper.unescape(rs[i]['content']);
             // rs[i]['content'] = rs[i]['content'];
             rs[i]['intro'] = htmlEscaper.unescape(rs[i]['intro']).replace(/<[^<>]+>/g, '');
@@ -293,11 +294,11 @@ module.exports = app => {
       // let rContent = encodeURIComponent(req.body.content),
       // let rContent = encodeURI((req.body.content).toString()),
       let rContent = htmlEscaper.escape(req.body.content),
-        rTitle = req.body.title,
+        rTitle = htmlEscaper.escape(req.body.title),
         rAuthor = req.session.user.name,
         rIsSHow = req.body.isShow,
         rTags = req.body.tags,
-        rIntro = req.body.intro;
+        rIntro = htmlEscaper.escape(req.body.intro);
 
       // console.log(rContent);
       let article = {
@@ -362,6 +363,7 @@ module.exports = app => {
 
       user.getArticleId(aid, (err, rs) => {
         rs[0]['id'] = rs[0]['article_id'];
+        rs[0]['title'] = htmlEscaper.unescape(rs[0]['title']);
         rs[0]['content'] = htmlEscaper.unescape(rs[0]['content']);
         // rs[0]['content'] = rs[0]['content'];
         rs[0]['intro'] = htmlEscaper.unescape(rs[0]['intro']).replace(/<[^<>]+>/g, '');
@@ -384,6 +386,32 @@ module.exports = app => {
 
 
   });
+
+  // 文章详情页
+  app.get('/detail/:id',(req, res, next) => {
+    res.render('index',{title:'首页'});
+  });
+
+  // 个人中心
+  app.get('/user/:id',(req, res, next) => {
+    res.render('index',{title:'首页'});
+  });
+
+  // 提交
+  app.get('/sub-article',(req, res, next) => {
+    res.render('index',{title:'首页'});
+  });
+
+  // 工具页面
+  app.get('/tool',(req, res, next) => {
+    res.render('index',{title:'首页'});
+  });
+
+  // 留言板
+  app.get('/message',(req, res, next) => {
+    res.render('index',{title:'首页'});
+  });
+
 
 
 };

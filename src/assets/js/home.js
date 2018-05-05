@@ -15,7 +15,39 @@ export default {
       num : 8,
       diff: 8,
       getMoreText: '+加载更多',
-      getMoreShow: true
+      getMoreShow: true,
+      messages: [
+        {
+          name: '瞄不二',
+          avaImg: '../assets/img/ava.jpg',
+          content: '网站很简洁，风格清新，我很喜欢...',
+          time: '12:23'
+        },
+        {
+          name: '瞄不二',
+          avaImg: '../assets/img/ava.jpg',
+          content: '网站很简洁，风格清新，我很喜欢...',
+          time: '12:23'
+        },
+        {
+          name: '瞄不二',
+          avaImg: '../assets/img/ava.jpg',
+          content: '网站很简洁，风格清新，我很喜欢...',
+          time: '12:23'
+        },
+        {
+          name: '瞄不二',
+          avaImg: '../assets/img/ava.jpg',
+          content: '网站很简洁，风格清新，我很喜欢...',
+          time: '12:23'
+        },
+        {
+          name: '瞄不二',
+          avaImg: '../assets/img/ava.jpg',
+          content: '网站很简洁，风格清新，我很喜欢...',
+          time: '12:23'
+        }
+      ]
     }
   },
   computed: {

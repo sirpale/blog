@@ -7,6 +7,8 @@
 
 export default {
   state: {
+    // 端口号
+    port: 3000,
     loading: true,
     show: false,
     dialogShow: false,
@@ -14,7 +16,7 @@ export default {
     noData: '数据加载中',
     isDisabled: true,
     // 验证码地址
-    codeUrl: 'http://127.0.0.1:3000/code',
+    codeUrl: 'code',
     code:''
   },
   mutations: {
@@ -44,7 +46,9 @@ export default {
     },
     // 设置验证码
     SET_CODE : (state, code) => {
-      state.code = code;
+      // 获取主机名
+      let hostName = window.location.hostname;
+      state.code = `http://${hostName}:${state.port}/${code}`;
     }
   },
   actions: {

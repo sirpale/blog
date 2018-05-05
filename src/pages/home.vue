@@ -29,7 +29,7 @@
                   <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
                 <!--</a>-->
                 <router-link :to="{path:`/detail/${item.id}`}">
-                  <img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">
+                  <img src="../assets/img/list.jpg" alt="">
                 </router-link>
               </div>
             </el-col>
@@ -132,60 +132,16 @@
           </el-card>
 
           <!-- 最新留言 -->
-          <el-card class="box-card list-msg">
+          <el-card class="box-card list-msg" v-for="(item, index) in messages" :key="index">
             <div class="list-content">
               <el-col :span="4" class="left">
                 <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/theme/talklee/include/avator/14.jpg" alt="">
+                  <img src="../assets/img/ava.jpg" alt="">
                 </a>
               </el-col>
               <el-col :span="20" class="right">
-                <p>网站很简洁，风格清新，我很喜欢...</p>
-                <span>阿狸宝宝 发表于：12:23</span>
-              </el-col>
-            </div>
-            <div class="list-content">
-              <el-col :span="4" class="left">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/theme/talklee/include/avator/14.jpg" alt="">
-                </a>
-              </el-col>
-              <el-col :span="20" class="right">
-                <p>网站很简洁，风格清新，我很喜欢...</p>
-                <span>阿狸宝宝 发表于：12:23</span>
-              </el-col>
-            </div>
-            <div class="list-content">
-              <el-col :span="4" class="left">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/theme/talklee/include/avator/14.jpg" alt="">
-                </a>
-              </el-col>
-              <el-col :span="20" class="right">
-                <p>网站很简洁，风格清新，我很喜欢...</p>
-                <span>阿狸宝宝 发表于：12:23</span>
-              </el-col>
-            </div>
-            <div class="list-content">
-              <el-col :span="4" class="left">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/theme/talklee/include/avator/14.jpg" alt="">
-                </a>
-              </el-col>
-              <el-col :span="20" class="right">
-                <p>网站很简洁，风格清新，我很喜欢...</p>
-                <span>阿狸宝宝 发表于：12:23</span>
-              </el-col>
-            </div>
-            <div class="list-content">
-              <el-col :span="4" class="left">
-                <a href="javascript:void(0);">
-                  <img src="https://www.talklee.com/zb_users/theme/talklee/include/avator/14.jpg" alt="">
-                </a>
-              </el-col>
-              <el-col :span="20" class="right">
-                <p>网站很简洁，风格清新，我很喜欢...</p>
-                <span>阿狸宝宝 发表于：12:23</span>
+                <p>{{item.content}}</p>
+                <span>{{item.name}} 发表于：{{item.time}}</span>
               </el-col>
             </div>
 

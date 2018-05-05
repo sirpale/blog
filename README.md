@@ -72,6 +72,10 @@ nodemon app
 - 登录和注册优化
 - 个人中心路由
 
+> 2018年5月5日
+- node路由优化
+- 发表文章标题转码
+
 [在线浏览](http://www.sjx666666.com/)
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

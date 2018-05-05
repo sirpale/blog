@@ -6,7 +6,10 @@
  */
 
 
-const API = '/api';
+let port = location.port;
+let API = '/api';
+
+if(port === 3000 || port === '') API = '';
 
 export default {
   // 首页 num为文章显示数
