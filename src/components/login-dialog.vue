@@ -1,7 +1,7 @@
 <template>
   <el-dialog title=""
              top="10px"
-             width="400px"
+             :width="loginWidth"
              :visible="dialogShow"
              :before-close="dialogClose"
   >
@@ -22,7 +22,7 @@
             <el-button type="primary" @click="login" :disabled="isDisabled">登录</el-button>
             <span><a href="javascript:void(0);">忘记密码？</a></span>
           </el-form-item>
-          <el-form-item label="" :label-width="formLabelWidth">
+          <el-form-item label="" >
             <p class="sub-msg red" v-if="show" ref="msg">{{ msg }}</p>
           </el-form-item>
         </el-form>
@@ -52,7 +52,7 @@
             <el-button type="success" @click="reg">注册</el-button>
             <!--<el-button @click="resetForm('fm')">重置</el-button>-->
           </el-form-item>
-          <el-form-item label="" :label-width="formLabelWidth">
+          <el-form-item label="">
             <p class="sub-msg red" v-if="show" ref="msg">{{ msg }}</p>
           </el-form-item>
         </el-form>

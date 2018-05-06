@@ -24,6 +24,17 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 .red {color:red;}
 
+.fa-spinner {animation:fa-spin .5s infinite steps(8)}
+
+
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+
 .el-card__body {padding:6px 10px;margin:0;}
 //.el-form-item {margin-bottom:12px;}
 
@@ -33,20 +44,21 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 .yzm {cursor:pointer;}
 
-
 #app {padding:0;margin:0;}
-.head-top {padding:0 20px;height:30px;line-height:30px;font-size:14px;background:#333;color:#ddd;border-bottom:#e6e6e6;
-  .left {float:left;
+.head-top {box-sizing:border-box;height:30px;line-height:30px;font-size:14px;background:#333;color:#ddd;border-bottom:#e6e6e6;
+  .left {float:left;padding:0 20px;
     span {padding: 0 10px;}
     b {font-weight:500;color: #fff;}
   }
-  .right {float:right;height:30px;overflow:hidden;
+  .right {float:right;padding:0 20px;height:30px;overflow:hidden;
+    i.el-icon-menu {display:none;margin-top:2px;cursor:pointer;}
     button.login-btn {padding:0;color:#ddd;}
     a {display:block;float:right;}
     .login-after {
       a {
         color:#eee;
-        display: inline;float:right;padding: 0 10px;
+        display: inline;
+        float:right;
         &:hover {color:#fff}
       }
     }
@@ -55,11 +67,10 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 #head {
   background:#fff;
-  .nav {padding: 0 20px;margin-bottom:10px;}
 }
 .container {
   padding: 0 20px;
-  margin:0 auto;
+  margin:20px auto 0 auto;
 }
 
 .container-box {
@@ -82,4 +93,33 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 .content-card {min-height:300px;}
 
+.home-left {width:80%;}
+.home-right {width:20%;padding-left:10px;}
 
+.nav {box-sizing:border-box;
+  .home-menu {padding:0 20px;}
+  .sub-menu {display:none;}
+}
+
+@media screen and (max-width:900px) {
+
+  .nav {height:40px;line-height:40px;margin-bottom:0;position:fixed;bottom:0;z-index:9999;background:#fff;width:100%;
+    .sub-menu { display:block;
+      ul {
+        li { float:left;width:30%;text-align: center;
+          a {display:block;text-align: center;font-size:16px;}
+        }
+      }
+    }
+  }
+
+  .head-top {
+    .left {display:none;}
+    .right {width:100%;text-align:center;
+      i.el-icon {display:block;float:left;font-size:1.5rem;}
+    }
+  }
+  .home-menu {display:none;}
+  .home-left {width:100%;}
+  .home-right {display:none;}
+}

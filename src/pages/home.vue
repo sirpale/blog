@@ -1,24 +1,13 @@
 <template>
   <div id="home">
     <el-row>
-      <el-col :span="18"
+      <el-col class="home-left"
               v-loading="loading"
               element-loading-text = '数据在加载中...'
               element-loading-background="rgba(255,255,255)"
       >
         <el-card  v-show="list.length === 0" class="no-data">{{noData}}</el-card>
         <el-row class="grid-content" v-for="(item,index) in list" :key="index">
-
-          <!-- 轮播图 -->
-          <!--<el-card class="box-card">-->
-            <!--<div class="block">-->
-              <!--<el-carousel height="220px">-->
-                <!--<el-carousel-item width="100%" v-for="(item,index) in imgs" :key="index">-->
-                  <!--<img :src="item" alt="" style="width:100%;display:block;height:100%;">-->
-                <!--</el-carousel-item>-->
-              <!--</el-carousel>-->
-            <!--</div>-->
-          <!--</el-card>-->
 
           <!-- 文章列表 -->
           <el-card class="box-card list-home" >
@@ -40,24 +29,25 @@
                 <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
                 <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
                 <span>
-                  <i class="el-icon-edit"></i>&nbsp;
+                  <i class="fa fa-user"></i>&nbsp;
                   <b>{{ item.author }}</b> &nbsp;
-                  <i class="el-icon-date"></i>&nbsp;
+                  <i class="fa fa-calendar"></i>&nbsp;
                   {{ item.createTime }}&nbsp;
-                  <i class="el-icon-view"></i>&nbsp;
+                  <i class="fa fa-eye"></i>&nbsp;
                   <em>{{ item.hits }}</em> &nbsp;
-                  <i class="el-icon-edit-outline"></i>&nbsp;
-                  <i>{{ item.postNum }}</i></span>
+                  <!--<i class="el-icon-edit-outline"></i>&nbsp;-->
+                  <!--<i>{{ item.postNum }}</i>-->
+                </span>
               </div>
             </el-col>
           </el-card>
 
         </el-row >
 
-        <el-button v-show="getMoreShow" style="width:100%;" @click="getMore">{{getMoreText}}</el-button>
+        <p v-show="!sw" style="width:100%;text-align:center;font-size:16px;height:30px;line-height:30px;"><i class="fa fa-spinner"></i>&nbsp;内容加载中...</p>
 
       </el-col>
-      <el-col :span="6" style="padding-left:10px;" >
+      <el-col class="home-right" >
         <div class="grid-content">
           <!-- 信息-->
           <el-card class="box-card ava">
@@ -65,7 +55,6 @@
               <img src="../assets/img/logo.png"  alt="">
             </a>
             <el-col :span="24" class="intro">
-              <span>盛吉祥</span>
               <p>
                 个人博客，发表日常记录，记录个人成长，工作经验总结
               </p>
@@ -75,42 +64,10 @@
           <!-- 热门和推荐 -->
           <el-tabs class="border-card" type="border-card" style="height:341px;overflow:hidden;">
             <el-tab-pane label="热门">
-              <ul class="list-tab">
+              <ul class="list-tab" v-for="(item, index) in list" :key="index">
                 <li>
-                  <span class="li-icon li-icon-1">1</span>
-                  <a href="javascript:void(0);" title="久煮火锅汤会让人中毒？朋友圈十大谣言曝光(2条评论)" target="_blank">久煮火锅汤会让人中毒？朋友圈十大谣言曝光</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-2">2</span>
-                  <a href="javascript:void(0);" title="“橘子皮秒开指纹锁”这是真的吗(2条评论)" target="_blank">“橘子皮秒开指纹锁”这是真的吗</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-3">3</span>
-                  <a href="javascript:void(0);" title="研究表明：2月14日结婚更有可能会离婚(10条评论)" target="_blank">研究表明：2月14日结婚更有可能会离婚</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-4">4</span>
-                  <a href="javascript:void(0);" title="升级版勒索病毒来袭，面对勒索病毒，个人用户该怎么办(2条评论)" target="_blank">升级版勒索病毒来袭，面对勒索病毒，个人用户该怎么办</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-5">5</span>
-                  <a href="javascript:void(0);" title="zblogphp设置精选导读的教程(8条评论)" target="_blank">zblogphp设置精选导读的教程</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-6">6</span>
-                  <a href="javascript:void(0);" title="zblogphp调用置顶文章的教程(4条评论)" target="_blank">zblogphp调用置顶文章的教程</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-7">7</span>
-                  <a href="javascript:void(0);" title="zblogphp热门文章、热评文章调用代码(0条评论)" target="_blank">zblogphp热门文章、热评文章调用代码</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-8">8</span>
-                  <a href="javascript:void(0);" title="zblogPHP智能侧边栏跟随固定范围浮动的效果(6条评论)" target="_blank">zblogPHP智能侧边栏跟随固定范围浮动的效果</a>
-                </li>
-                <li>
-                  <span class="li-icon li-icon-9">9</span>
-                  <a href="javascript:void(0);" title="简单说下网站导致CPU飙升的问题(8条评论)" target="_blank">简单说下网站导致CPU飙升的问题</a>
+                  <span class="li-icon li-icon-1">{{index + 1}}</span>
+                  <router-link :to="{path:`/detail/${item.id}`}" :title="item.title">{{item.title}}</router-link>
                 </li>
               </ul>
             </el-tab-pane>
@@ -119,33 +76,33 @@
 
           <!-- 标签 -->
           <el-card class="box-card" style="height:180px;overflow:hidden;">
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
-            <el-tag>标签一</el-tag>
-            <el-tag type="success">标签二</el-tag>
-            <el-tag type="info">标签三</el-tag>
-            <el-tag type="warning">标签四</el-tag>
-            <el-tag type="danger">标签五</el-tag>
+            <el-tag>html</el-tag>
+            <el-tag type="success">css</el-tag>
+            <el-tag type="info">javascript</el-tag>
+            <el-tag type="warning">nodejs</el-tag>
+            <el-tag type="danger">vue</el-tag>
+            <el-tag>react</el-tag>
+            <el-tag type="success">mysql</el-tag>
+            <el-tag type="info">mongodb</el-tag>
+            <el-tag type="warning">html5</el-tag>
+            <el-tag type="danger">css3</el-tag>
           </el-card>
 
-          <!-- 最新留言 -->
-          <el-card class="box-card list-msg" v-for="(item, index) in messages" :key="index">
-            <div class="list-content">
-              <el-col :span="4" class="left">
-                <a href="javascript:void(0);">
-                  <img src="../assets/img/ava.jpg" alt="">
-                </a>
-              </el-col>
-              <el-col :span="20" class="right">
-                <p>{{item.content}}</p>
-                <span>{{item.name}} 发表于：{{item.time}}</span>
-              </el-col>
-            </div>
+          <!--&lt;!&ndash; 最新留言 &ndash;&gt;-->
+          <!--<el-card class="box-card list-msg" v-for="(item, index) in messages" :key="index">-->
+            <!--<div class="list-content">-->
+              <!--<el-col :span="4" class="left">-->
+                <!--<a href="javascript:void(0);">-->
+                  <!--<img src="../assets/img/ava.jpg" alt="">-->
+                <!--</a>-->
+              <!--</el-col>-->
+              <!--<el-col :span="20" class="right">-->
+                <!--<p>{{item.content}}</p>-->
+                <!--<span>{{item.name}} 发表于：{{item.time}}</span>-->
+              <!--</el-col>-->
+            <!--</div>-->
 
-          </el-card>
+          <!--</el-card>-->
 
         </div>
       </el-col>

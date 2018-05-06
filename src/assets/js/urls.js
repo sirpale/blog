@@ -9,7 +9,8 @@
 let port = location.port;
 let API = '/api';
 
-if(port === 3000 || port === '') API = '';
+if(port === '3000' || port === '') API = '';
+console.log(port, API);
 
 export default {
   // 首页 num为文章显示数

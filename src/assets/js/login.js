@@ -47,11 +47,10 @@ export default {
         // 失败处理
         timer = setTimeout(() => {
           _this.getUserInfo();
-        }, 2000);
+        }, 10000);
       }).then(d => {
-        let dt = d.data;
-        // console.log(dt);
-        if(dt.status === 'success') {
+        let dt = d && d.data ? d.data : {};
+        if(dt && dt.status === 'success') {
           _this.setLogin(true);
           _this.setName(dt.userInfo.name);
           _this.setUserInfo(dt.userInfo);
@@ -65,7 +64,6 @@ export default {
 
       _this.uts.get(_this.urls.LOGOUT,{},res=>{}).then(d => {
         _this.setLogin(false);
-
         if(d.data.status === 'success') {
           _this.uts.notice('success',d.data.message);
           _this.setName('');
@@ -74,6 +72,7 @@ export default {
         }
         _this.$router.push('/');
       });
+
     }
   },
   watch : {

@@ -14,7 +14,7 @@
           <el-button
             v-show="loginName && loginName === 'admin'"
             type="danger"
-            icon="el-icon-edit"
+            icon="fa fa-edit"
             size="small"
             style="float:right;"
             @click="jumpToEdit(article.id)">
@@ -22,13 +22,13 @@
           </el-button>
         </h3>
         <span class="author">
-        <i class="el-icon-edit"></i>&nbsp;
+        <i class="fa fa-edit"></i>&nbsp;
         {{article.author}} &nbsp;
-        <i class="el-icon-date"></i>&nbsp;
+        <i class="fa fa-calendar"></i>&nbsp;
         {{ article.createTime }}&nbsp;
-        <i class="el-icon-view"></i>&nbsp;
+        <i class="fa fa-eye"></i>&nbsp;
         {{ article.hits }}&nbsp;
-        <i class="el-icon-edit-outline"></i>&nbsp;
+        <i class="fa fa-comment-o"></i>&nbsp;
         {{article.postNum}}
       </span>
         <div class="intro">

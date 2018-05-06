@@ -8,12 +8,13 @@
         Hi，欢迎来到 <span class="red">盛吉祥</span>的博客，今天是 <b>{{ date }}</b>
       </div>
       <div class="right">
+        <i class="el-icon el-icon-menu"></i>
         <Login />
       </div>
+
     </div>
     <Head></Head>
     <div class="container">
-
       <router-view/>
     </div>
     <div class="clear"></div>

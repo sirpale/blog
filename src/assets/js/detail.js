@@ -40,14 +40,12 @@ export default {
   },
   mounted() {
 
-    console.log(this.loginName);
-
     let _this = this, id = _this.$router.history.current.params.id;
     _this.uts.get(`${_this.urls.GET_ARTICLE}?id=${id}`,{}, res => {
       _this.setNoData('获取内容失败！');
       _this.setLoading(false);
     }).then(d => {
-      let dt = d.data;
+      let dt = d && d.data ? d.data : {};
       if(dt.status === 'success') {
         _this.assignData(dt.data);
         _this.setShow(false);

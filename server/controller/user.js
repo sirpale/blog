@@ -2,6 +2,7 @@ const Pool = require('../db/pooling');
 const sqlString = require('sqlstring');
 
 class User {
+
   constructor(props) {
 
     // 注册用户需要的信息
@@ -25,23 +26,29 @@ class User {
 
     return new Promise((resolve, reject) => {
       Pool.getConnection((err, conn) => {
-        if(err) {
-          callback(err);
-          conn.release();
-          reject(err);
+
+        if (!conn) {
+          reject('数据库连接失败！');
+        } else {
+
+          if (err) {
+            callback(err);
+            conn.release();
+            reject(err);
+          }
+
+          let sql = sqlString.format(`insert into b_user(name,password,question,answer) values('${user.name}','${user.password}','${user.question}','${user.answer}')`);
+
+          conn.query(sql, (error, res) => {
+            // 不管是否成功都结束数据库
+            conn.release();
+
+            if (error) reject(error);
+
+            callback(error, user);
+            resolve(user);
+          })
         }
-
-        let sql = sqlString.format(`insert into b_user(name,password,question,answer) values('${user.name}','${user.password}','${user.question}','${user.answer}')`);
-
-        conn.query(sql,(error, res) => {
-          // 不管是否成功都结束数据库
-          conn.release();
-
-          if(error) reject(error);
-
-          callback(error, user);
-          resolve(user);
-        })
       });
     });
   }
@@ -51,31 +58,36 @@ class User {
     return new Promise((resolve, reject) => {
       // 链接数据库
       Pool.getConnection((err, conn) => {
-        if(err) {
-          callback(err);
-          conn.release();
-          reject(err);
-        }
 
-        let sql = sqlString.format(`select * from b_user where name='${name}' limit 1`);
+        if (!conn) {
+          reject('数据库连接失败！');
+        } else {
 
-        conn.query(sql, (error, res) => {
-          conn.release();
-          if(res.length > 0) {
-            let user = new User(res[0]);
-            callback(error, user);
-            resolve(user);
-          } else {
-            callback(error, null);
-            reject(error);
+          if (err) {
+            callback(err);
+            conn.release();
+            reject(err);
           }
-        });
+
+          let sql = sqlString.format(`select * from b_user where name='${name}' limit 1`);
+
+          conn.query(sql, (error, res) => {
+            conn.release();
+            if (res.length > 0) {
+              let user = new User(res[0]);
+              callback(error, user);
+              resolve(user);
+            } else {
+              callback(error, null);
+              reject(error);
+            }
+          });
+        }
       });
     }).catch(e => {
       console.log(e);
     });
   }
-
 
   // 保存文章
   saveArticle(article, callback) {
@@ -83,19 +95,24 @@ class User {
     return new Promise((resolve, reject) => {
 
       Pool.getConnection((err, conn) => {
-        if(err) {
-          conn.release();
-          callback(err, null);
-          reject(err);
-        }
+
+        if (!conn) {
+          reject('数据库连接失败！');
+        } else {
+
+          if (err) {
+            conn.release();
+            callback(err, null);
+            reject(err);
+          }
 
 
-        let hits = Math.floor(Math.random() * 3000);
-        let postNum = Math.floor(Math.random() * 300);
+          let hits = Math.floor(Math.random() * 3000);
+          let postNum = Math.floor(Math.random() * 300);
 
-        console.log(article);
+          console.log(article);
 
-        let sql = sqlString.format(`insert into b_article1(
+          let sql = sqlString.format(`insert into b_article1(
         title,
         content,
         is_show,
@@ -119,130 +136,112 @@ class User {
         '${article.intro}'
         )`);
 
-        conn.query(sql,(err, res) => {
-          conn.release();
+          conn.query(sql, (err, res) => {
+            conn.release();
 
-          if(!res) {
-            callback(err, null);
-            reject(err);
-          } else {
-            callback(err, res);
-            resolve(res);
-          }
-
-        });
+            if (!res) {
+              callback(err, null);
+              reject(err);
+            } else {
+              callback(err, res);
+              resolve(res);
+            }
+          });
+        }
       });
-
     });
-
-
   }
 
   // 修改文章
   modifyArticle(article, callback) {
     return new Promise((resolve, reject) => {
       Pool.getConnection((err, conn) => {
-        if(err) {
-          conn.release();
-          callback(err, null);
-          reject(err);
-        }
 
-        let hits = Math.floor(Math.random() * 3000);
-        let postNum = Math.floor(Math.random() * 300);
+        if (!conn) {
+          reject('数据库连接失败！');
+        } else {
 
-
-        console.log(article);
-        // title=(select title from b_article1 where article_id=${article.id})
-        // let sql = sqlString.format(`update
-        // b_article1
-        // set
-        // title='${article.title}',
-        // content='${article.content}',
-        // author='${article.author}',
-        // tags='${article.tags}',
-        // is_show='${article.isShow}',
-        // intro='${article.intro}'
-        // where
-        // article_id='${article.id}'
-        // `);
-
-        let sql = sqlString.format(`update b_article1 set 
-        title=?,
-        content=?,
-        author=?,
-        update_time=?,
-        tags=?,
-        is_show=?,
-        intro=? 
-        where 
-        article_id=?
-        `,[
-          article.title,
-          article.content,
-          article.author,
-          article.createTime,
-          article.tags,
-          article.isShow,
-          article.intro,
-          article.id
-        ]);
-
-        console.log('=========================');
-        console.log(sql);
-        console.log('==========================');
-
-        conn.query(sql,(err, res) => {
-          conn.release();
-          if(err) {
+          if (err) {
+            conn.release();
             callback(err, null);
             reject(err);
-          } else {
-
-            console.log('更新的结果：');
-            console.log(res);
-
-            callback(err, res);
-            resolve(res)
           }
 
-        });
+
+          let sql = sqlString.format(`update b_article1 set 
+            title=?,
+            content=?,
+            author=?,
+            update_time=?,
+            tags=?,
+            is_show=?,
+            intro=? 
+            where 
+            article_id=?
+            `,
+            [
+            article.title,
+            article.content,
+            article.author,
+            article.createTime,
+            article.tags,
+            article.isShow,
+            article.intro,
+            article.id
+          ]
+          );
+
+
+          conn.query(sql, (err, res) => {
+            conn.release();
+            if (err) {
+              callback(err, null);
+              reject(err);
+            } else {
+
+              console.log('更新的结果：');
+              console.log(res);
+
+              callback(err, res);
+              resolve(res)
+            }
+
+          });
+        }
       });
     });
   }
 
-
   // 获取指定数量的文章
-  getArticle(num,callback) {
-
-    // console.log(num);
+  getArticle(num, callback) {
 
     return new Promise((resove, reject) => {
 
       Pool.getConnection((err, conn) => {
 
-        if(err) {
-          callback(err, null);
-          conn.release();
-          reject(err);
-        }
-
-        let sql = sqlString.format(`select * from b_article1 order by update_time desc limit ${num}`);
-
-        conn.query(sql,(err, res) => {
-
-          // console.log(res);
-          conn.release();
-          if(err) {
+        if (!conn) {
+          reject('数据库连接失败！');
+        } else {
+          if (err) {
             callback(err, null);
+            conn.release();
             reject(err);
-          } else {
-            callback(err, res);
           }
 
+          let sql = sqlString.format(`select * from b_article1 order by update_time desc limit ${num}`);
+          conn.query(sql, (err, res) => {
 
+            // console.log(res);
+            conn.release();
+            if (err) {
+              callback(err, null);
+              reject(err);
+            } else {
+              callback(err, res);
+            }
 
-        });
+          });
+        }
 
       });
 
@@ -255,30 +254,35 @@ class User {
     return new Promise((resolve, reject) => {
 
       Pool.getConnection((err, conn) => {
-        if(err) {
-          callback(err, null);
-          conn.release();
-          reject(err);
+
+        if(!conn) {
+          reject('数据库连接失败！');
+        } else {
+
+          if (err) {
+            callback(err, null);
+            conn.release();
+            reject(err);
+          }
+
+          let sql = sqlString.format(`select count(article_id) from b_article1`);
+
+          conn.query(sql, (err, res) => {
+
+            // console.log(res);
+
+            conn.release();
+            if (!res) {
+              callback(err, null);
+              reject(err);
+            } else {
+              callback(err, res[0]);
+              resolve(res);
+            }
+          });
         }
 
-        let sql = sqlString.format(`select count(article_id) from b_article1`);
-
-        conn.query(sql, (err, res) => {
-
-          // console.log(res);
-
-          conn.release();
-          if(!res) {
-            callback(err, null);
-            reject(err);
-          } else {
-            callback(err, res[0]);
-            resolve(res);
-          }
-        })
-
-      })
-
+      });
 
     });
   }
@@ -288,32 +292,34 @@ class User {
 
     return new Promise((resolve, reject) => {
       Pool.getConnection((err, conn) => {
-        if(err) {
-          callback(err, null);
-          conn.release();
-          reject(err);
-        }
-
-        let sql = sqlString.format(`select * from b_article1 where article_id=${id} limit 1`)
-
-        conn.query(sql,(error, res) => {
-          conn.release();
-          if(!res) {
-            callback(err,null);
+        if(!conn) {
+          reject('数据库连接失败！');
+        } else {
+          if (err) {
+            callback(err, null);
+            conn.release();
             reject(err);
-          } else {
-            callback(err, res);
-            resolve(res);
           }
-        });
 
+          let sql = sqlString.format(`select * from b_article1 where article_id=${id} limit 1`)
+
+          conn.query(sql, (error, res) => {
+            conn.release();
+            if (!res) {
+              callback(err, null);
+              reject(err);
+            } else {
+              callback(err, res);
+              resolve(res);
+            }
+          });
+        }
       });
     });
 
   }
-
-
 }
+
 
 module.exports = User;
 

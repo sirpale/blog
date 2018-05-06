@@ -56,22 +56,22 @@ export default {
 
     };
 
-
     return {
       activeName: 'login',
+      loginWidth: '500px',
       rules: {
         name: [
-          // {required: true, message: '请输入用户名', trigger: 'blur'},
-          // {min: 4, max: 20, message: '长度在4到20个字符', trigger: 'change'},
+          {required: true, message: '请输入用户名', trigger: 'blur'},
+          {min: 4, max: 20, message: '长度在4到20个字符', trigger: 'change'},
           {validator: validateName, trigger: 'change'}
         ],
         password: [
-          // {required: true, message: '请输入密码', trigger: 'blur,'},
-          // {min: 6, max: 20, message: '长度在6到20个字符', trigger: 'change'},
+          {required: true, message: '请输入密码', trigger: 'blur,'},
+          {min: 6, max: 20, message: '长度在6到20个字符', trigger: 'change'},
           {validator: validatePass, trigger:'change'}
         ],
         repassword: [
-          // {required: true, message:'请输入确认密码', trigger:'blur'},
+          {required: true, message:'请输入确认密码', trigger:'blur'},
           {validator: validateCheckPass, trigger:'change'}
         ],
         question: [
@@ -87,9 +87,26 @@ export default {
     }
   },
   created() {
-    this.setCode(this.codeUrl);
+    // this.setCode(this.codeUrl);
+  },
+  watch: {
+    loginWidth: function(val, oldVal) {}
   },
   mounted() {
+
+    let _this = this;
+    // 初始化验证码
+    _this.setCode(this.codeUrl);
+
+    window.addEventListener('resize',() => {
+      let cw = document.documentElement.clientWidth || document.body.clientWidth;
+      if(cw <= 600) {
+        _this.loginWidth = '90%';
+      } else {
+        _this.loginWidth = '500px';
+      }
+    });
+
   },
   computed: {
     ...mapState({
@@ -119,6 +136,7 @@ export default {
       'setCode'
     ]),
     handleClick() {
+      this.setCode(this.codeUrl);
     },
     dialogClose(done) {
 
@@ -129,7 +147,6 @@ export default {
       this.setMsg('');
       // console.log('关闭');
       this.setCode(this.codeUrl);
-
       done();
 
     },
@@ -150,12 +167,12 @@ export default {
       } else {
 
         if (_this.form.password === _this.form.repassword) {
-          _this.uts.post(_this.urls.REG, _this.form, res => { // 失败处理
+          _this.uts.post(_this.urls.REG, _this.form, res => {
+            // 失败处理
             _this.setShow(true);
             _this.setMsg('注册失败，请稍后重试');
           }).then(d => {
-            let dt = d.data;
-
+            let dt = d && d.data ? d.data : {};
             if (dt.status === 'success') {
               _this.setDialogShow(false);
               _this.setIsLogin(true);
@@ -163,11 +180,11 @@ export default {
               _this.setStatusReg(true);
               _this.setMsg('');
               _this.formReset();
-              _this.uts.notice('success', dt.message);
+              _this.uts.notice('success', dt.message || '注册成功');
               _this.$router.push(`/sub-article`);
             } else {
               _this.setShow(true);
-              _this.setMsg(dt.message);
+              _this.setMsg(dt.message || '注册失败');
               _this.setCode(this.codeUrl);
             }
           });
@@ -180,13 +197,13 @@ export default {
     login() {
       let _this = this;
 
-      console.log(_this.form);
-
       if (_this.form.name !== '' && _this.form.password !== '' && _this.form.code !== '') {
         _this.uts.post(_this.urls.LOGIN, _this.form, res => {
-
+          // 失败处理
+          _this.setShow(true);
+          _this.setMsg('登录失败');
         }).then(d => {
-          let dt = d.data;
+          let dt = d && d.data ? d.data : {};
           if (dt.status === 'success') {
             _this.setDialogShow(false);
             _this.setName(dt.data.name);
@@ -195,15 +212,13 @@ export default {
             _this.setShow(false);
             _this.setIsLogin(true);
             _this.formReset();
-            _this.uts.notice('success', dt.message);
+            _this.uts.notice('success', dt.message || '登录成功');
             // _this.$router.push(`/sub-article`);
           } else {
             _this.setShow(true);
-            _this.setMsg(dt.message);
+            _this.setMsg(dt.message || '登录失败');
             _this.setCode(this.codeUrl);
           }
-
-
         });
       } else {
         _this.setShow(true);
@@ -218,10 +233,6 @@ export default {
     formReset() {
       this.$refs['form'].resetFields();
       this.setMsg('');
-    },
-    resetForm() {
-      this.$refs['form'].resetFields();
-      // console.log('重置成功');
-    },
+    }
   }
 }

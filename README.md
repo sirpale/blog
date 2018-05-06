@@ -40,43 +40,6 @@ nodemon app
 
 ```
 
-> 2018年4月22日
-- 创建git仓库
-- 上传源码
-
-> 2018年4月26日
-- 发表文章
-- 首页展示文章
-- 增加详情页
-
-> 2018年4月28日
-- 优化文章编辑器
-- 文章内容转码
-- 增加文章简介
-- 优化文章显示细节
-
-> 2018年4月29日
-- 优化文件目录
-- 模块抽离
-- 数据抽离
-
-> 2018年4月30日
-- 发表文章优化
-- 管理员修改文章功能
-- 首页加载更多文章
-
-> 2018年5月3日
-- 增加验证码
-
-> 2018年5月4日
-- 登录和注册优化
-- 个人中心路由
-
-> 2018年5月5日
-- node路由优化
-- 发表文章标题转码
-- 登录/注册表单验证
-
 [在线浏览](http://www.sjx666666.com/)
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

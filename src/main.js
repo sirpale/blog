@@ -17,11 +17,12 @@ import Urls from './assets/js/urls'
 // import mavonEditor from 'mavon-editor';
 import vueQuillEditor from 'vue-quill-editor'
 import hljs from 'highlight.js'
-import $ from 'jquery';
+// import $ from 'jquery';
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import 'mavon-editor/dist/css/index.css'
+import 'font-awesome/css/font-awesome.min.css';
+// import 'mavon-editor/dist/css/index.css'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'

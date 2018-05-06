@@ -1,8 +1,14 @@
 <template>
-  <div>
+  <div class="nav">
+    <div class="sub-menu">
+      <ul><li><router-link :to="{path:'/'}">首页</router-link></li></ul>
+      <ul><li><router-link :to="{path:'/tool'}">工具</router-link></li></ul>
+      <ul><li><router-link :to="{path:'/message'}">留言板</router-link></li></ul>
+      <!--<ul><li><router-link v-show="loginName" :to="{path:`/user/${loginName}`}">个人中心</router-link></li></ul>-->
+    </div>
   <el-menu
+    class="home-menu"
     :default-active="activeIndex"
-    class="el-menu-demo"
     mode="horizontal"
     @select="handleSelect"
     router
@@ -17,8 +23,9 @@
     <el-button
       style="float:right;margin-top:10px;"
       type="success"
+      icon="fa fa-edit"
       v-show="isLogin"
-      @click="jumpToSubArticle">发表新文章</el-button>
+      @click="jumpToSubArticle" >写文章</el-button>
   </el-menu>
 
   </div>

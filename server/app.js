@@ -12,6 +12,12 @@ const route = require('./routes/index');
 const sessionStore = new MySQLStore(Object.assign(config,{}));
 
 const app = express();
+const server = require('http').Server(app);
+const socketServer = require('ws').Server;
+const wss = new socketServer({
+  server:server,
+  port: 3001
+});
 
 // view engine setup
 // 修改默认引擎
@@ -37,7 +43,46 @@ app.use(session({
 }));
 
 
+
+// socket服务器
+wss.on('connection', (client) => {
+  client.on('message', _message => {
+    let _messageObj = JSON.parse(_message);
+
+    // status = 1表示正常
+    _messageObj.status = 1;
+    this.message = _messageObj;
+
+    // 把客户端的消息广播给所有在线的用户
+    wss.broadcast(_messageObj);
+  });
+
+  // 退出聊天
+  client.on('close', () => {
+    try {
+      this.message = this.message || {};
+      // status = 0 表示退出聊天
+      this.message.status = 0;
+      // 把客户端的消息广播给所有在线的用户
+      wss.broadcast(this.message);
+    } catch(e) {
+      console.log('刷新页面了');
+
+    }
+
+  })
+
+});
+
+// 定义广播方法
+wss.broadcast = function broadcast(_messageObj) {
+  wss.clients.forEach((client) => {
+    client.send(JSON.stringify(_messageObj));
+  })
+};
+
 route(app);
+
 
 // app.use(multer());
 app.use(express.static(path.join(__dirname, '/')));
