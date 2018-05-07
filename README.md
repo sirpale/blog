@@ -36,6 +36,7 @@ npm test
 ## 服务器启动
 ```$xslt
 cd server
+npm install
 nodemon app
 
 ```
