@@ -44,7 +44,7 @@
 
         </el-row >
 
-        <p v-show="!sw" style="width:100%;text-align:center;font-size:16px;height:30px;line-height:30px;"><i class="fa fa-spinner"></i>&nbsp;内容加载中...</p>
+        <p v-show="sw" style="width:100%;text-align:center;font-size:16px;height:30px;line-height:30px;"><i class="fa fa-spinner"></i>&nbsp;内容加载中...</p>
 
       </el-col>
       <el-col class="home-right" >
@@ -62,17 +62,17 @@
 
           </el-card>
           <!-- 热门和推荐 -->
-          <el-tabs class="border-card" type="border-card" style="height:341px;overflow:hidden;">
-            <el-tab-pane label="热门">
-              <ul class="list-tab" v-for="(item, index) in list" :key="index">
-                <li>
-                  <span class="li-icon li-icon-1">{{index + 1}}</span>
-                  <router-link :to="{path:`/detail/${item.id}`}" :title="item.title">{{item.title}}</router-link>
-                </li>
-              </ul>
-            </el-tab-pane>
-            <el-tab-pane label="推荐">推荐</el-tab-pane>
-          </el-tabs>
+          <!--<el-tabs class="border-card" type="border-card" style="height:341px;overflow:hidden;">-->
+            <!--<el-tab-pane label="热门">-->
+              <!--<ul class="list-tab" v-for="(item, index) in list" :key="index">-->
+                <!--<li>-->
+                  <!--<span class="li-icon li-icon-1">{{index + 1}}</span>-->
+                  <!--<router-link :to="{path:`/detail/${item.id}`}" :title="item.title">{{item.title}}</router-link>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</el-tab-pane>-->
+            <!--<el-tab-pane label="推荐">推荐</el-tab-pane>-->
+          <!--</el-tabs>-->
 
           <!-- 标签 -->
           <el-card class="box-card" style="height:180px;overflow:hidden;">

@@ -213,7 +213,7 @@ class User {
   }
 
   // 获取指定数量的文章
-  getArticle(num, callback) {
+  getArticle(par, callback) {
 
     return new Promise((resove, reject) => {
 
@@ -228,7 +228,7 @@ class User {
             reject(err);
           }
 
-          let sql = sqlString.format(`select * from b_article1 order by update_time desc limit ${num}`);
+          let sql = sqlString.format(`select * from b_article1 order by update_time desc limit ${(par.page-1)*par.size},${par.size}`);
           conn.query(sql, (err, res) => {
 
             // console.log(res);

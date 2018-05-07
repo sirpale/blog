@@ -29,9 +29,13 @@ export default {
     SET_ARTICLE_ID: (state, id) => {
       state.data.id = id;
     },
-    // 获取文章列表
+    // 首次获取文章列表
     SET_LIST : (state, list) => {
-      state.list = list
+      state.list = list;
+    },
+
+    ADD_LIST: (state, list) => {
+      state.list = [].concat(state.list, list);
     },
 
 
@@ -72,7 +76,9 @@ export default {
     setList({commit, rootState}, list) {
      commit('SET_LIST', list);
     },
-
+    addList({commit}, list) {
+      commit('ADD_LIST', list);
+    },
     clearData({commit}) {
       commit('CLEAR_DATA');
     },

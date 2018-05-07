@@ -43,11 +43,14 @@ module.exports = app => {
       message: '获取文章失败'
     };
 
-    let articleNum = req.query.num || 10;
+    let articlePar = {
+      page : req.query.page || 1,
+      size : req.query.size || 10
+    };
 
     // console.log(user);
 
-    user.getArticle(articleNum, (err, rs) => {
+    user.getArticle(articlePar, (err, rs) => {
 
       if (rs) {
         if (rs.length > 0) {

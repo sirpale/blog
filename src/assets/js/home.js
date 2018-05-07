@@ -4,21 +4,24 @@ export default {
   metaInfo () {
     return {
       title: this.pageName,
-      meta: [{
-        name: 'keywords',
-        content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
-      }]
+      meta: [
+        {
+          name: 'keywords',
+          content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+        }
+      ]
     }
   },
   components: {},
   data() {
     return {
       pageName: '首页-盛吉祥的博客',
-      num : 6,
-      diff: 6,
-      sw: false,
-      getMoreText: '+加载更多',
-      getMoreShow: true,
+      dPage : 1,
+      dSize: 6,
+      page : 1,
+      size : 6,
+      total : 1,
+      sw: true,
       messages: [
         {
           name: '瞄不二',
@@ -66,47 +69,57 @@ export default {
     ...mapActions([
       'setNoData',
       'setLoading',
-      'setList'
+      'setList',
+      'addList'
     ]),
-    getArticle(num) {
+    getArticle(page, size) {
       let _this = this;
 
-      _this.uts.get(`${_this.urls.GET_ARTICLE_LIST}?num=${num}`, {}, res => {
-        // 失败处理
-        _this.setNoData('获取文章列表失败');
-        _this.setLoading(false);
-      }).then(d => {
-        let dt = d && d.data ? d.data : {};
-        if(dt.status === 'success') {
-          if(num - _this.diff > dt.total ) {
-            _this.sw = true;
-          } else {
-            if(dt.data.length === 0) {
-              _this.setNoData('暂时没有发表文章');
-              _this.sw = true;
+      if(_this.sw) {
+
+        if(_this.list.length < _this.total) {
+          _this.uts.get(`${_this.urls.GET_ARTICLE_LIST}?page=${page}&size=${size}`, {}, res => {
+            // 失败处理
+            _this.setNoData('获取文章列表失败');
+            _this.setLoading(false);
+          }).then(d => {
+            let dt = d && d.data ? d.data : {};
+
+            if (dt.status === 'success') {
+
+              if (dt.data.length === 0) {
+                _this.setNoData('暂时没有发表文章');
+                _this.sw = false;
+              } else {
+                _this.total = dt.total;
+
+                if (_this.page <= 1) {
+                  _this.setList(dt.data);
+                } else {
+                  _this.addList(dt.data);
+                }
+
+                if(_this.list.length === _this.total) _this.sw = false;
+
+              }
             }
-            _this.sw = false;
-            _this.setList(dt.data);
-          }
+            _this.setLoading(false);
+          });
+        } else {
+          _this.sw = false;
         }
-        _this.setLoading(false);
-      })
+
+
+
+      }
     },
     getMore() {
-      let num = this.num + this.diff;
-      this.getArticle(num);
-      this.num = num;
-    }
+      ++this.page;
+      this.getArticle(this.page, this.size);
+    },
+    scrollLoad() {
 
-  },
-  created() {
-    this.getArticle(this.num);
-  },
-  mounted() {
-    let _this = this;
-
-    // 鼠标滚动监听
-    window.addEventListener('scroll',(e) => {
+      let _this = this;
       // 可视区域高度
       let dHeight = document.documentElement.clientHeight || document.body.clientHeight;
       // 滚动高度
@@ -115,13 +128,29 @@ export default {
       let docHeight = document.documentElement.offsetHeight || document.body.offsetHeight;
 
       // 判断是否滚动到底部
-      if(bodyScrollTop + dHeight >= docHeight - 30) {
-        // 判断
-        if(!_this.sw) {
-          setTimeout(_this.getMore, 1000);
-
-        }
+      if(bodyScrollTop + dHeight >= docHeight) {
+        setTimeout(()=>{
+          _this.getMore(_this.page, _this.size);
+        },300);
       }
-    });
-  }
+    }
+  },
+  watch: {
+    list : function(val, oldVal) {
+      // console.log(val, oldVal);
+    }
+  },
+  created() {
+    let _this = this;
+
+    _this.setList([]);
+    this.getArticle(this.dPage, this.dSize);
+    // 鼠标滚动监听
+    window.addEventListener('scroll',_this.scrollLoad,false);
+  },
+  destroyed() {
+    let _this = this;
+    window.removeEventListener('scroll',_this.scrollLoad,false);
+  },
+  mounted() {}
 }
