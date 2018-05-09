@@ -1,55 +1,38 @@
 <template>
   <el-card class="box-card content-card">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
-      <el-form-item label="活动名称" prop="name">
-        <el-input v-model="ruleForm.name" />
-      </el-form-item>
-      <el-form-item label="活动区域" prop="region">
-        <el-select v-model="ruleForm.region" placeholder="请选择活动区域">
-          <el-option label="区域一" value="shanghai" />
-          <el-option label="区域二" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="活动时间" required>
-        <el-col :span="11">
-          <el-form-item prop="date1">
-            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col class="line" :span="2">-</el-col>
-        <el-col :span="11">
-          <el-form-item prop="date2">
-            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
-          </el-form-item>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="即时配送" prop="delivery">
-        <el-switch v-model="ruleForm.delivery" />
-      </el-form-item>
-      <el-form-item label="活动性质" prop="type">
-        <el-checkbox-group v-model="ruleForm.type">
-          <el-checkbox label="美食/餐厅线上活动" name="type" />
-          <el-checkbox label="地推活动" name="type" />
-          <el-checkbox label="线下主题活动" name="type" />
-          <el-checkbox label="单纯品牌曝光" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="特殊资源" prop="resource">
-        <el-radio-group v-model="ruleForm.resource">
-          <el-radio label="线上品牌商赞助" />
-          <el-radio label="线下场地免费" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="活动形式" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <div class="socket-box">
+      <p class="conn-state" ></p>
+      <el-button @click="connectSocket" :disabled="!disState" class="conn">进入聊天</el-button>
+      <el-button type="warning" @click="closeSocket" :disabled="disState" class="close">退出聊天</el-button><br />
+
+      名字：<input :disabled="!disState" type="text" id="nickname" /><br />
+      内容：<textarea type="textarea" id="msg-box" rows="10" ></textarea><br/>
+
+      <el-button type="success" @click="sendMsg" :disabled="disState" class="send">提交信息</el-button>
+
+      <div class="msg-list"></div>
+    </div>
+
   </el-card>
 </template>
+
+<style lang="scss" scoped>
+  button {width:200px;height:40px;margin:20px;}
+  .socket-box {
+    color:#333;
+    font-size:20px;
+    input[type="text"] {width:300px;margin-bottom:20px;padding:10px;}
+    textarea {width:300px;padding:10px;}
+    .conn-state {color:green;padding:10px 20px;}
+    .msg-list {
+      font-size:16px;color:#666;
+      padding: 30px;
+
+    }
+  }
+
+
+</style>
 
 <script>
   import {mapState, mapActions} from 'vuex';
@@ -57,55 +40,107 @@
   export default {
     data() {
       return {
-        ruleForm: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        rules: {
-          name: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
-          ],
-          date1: [
-            { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
-          ],
-          date2: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-          ],
-          type: [
-            { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
-          ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
-          ],
-          desc: [
-            { required: true, message: '请填写活动形式', trigger: 'blur' }
-          ]
-        }
-      };
+        wsUrl:  location.hostname,
+        socket: null,
+        disState: true
+      }
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
+      connectSocket() {
+
+        let _this = this;
+
+        if(_this.socket) return false;
+
+        // 向服务器发送信息
+        let connState = document.querySelector('.conn-state'),
+          name = document.getElementById('nickname');
+
+        if(!WebSocket) {
+          connState.innerHTML = '您的浏览器不支持webSocket';
+          return false;
+        }
+
+        if(name.value === '') {
+          _this.uts.msg('error','名字不能为空')
+        } else {
+
+          // 链接socket服务器
+          _this.socket = new WebSocket(`ws://${_this.wsUrl}:3001`);
+
+          let socket = _this.socket;
+
+          // 监听socket的链接
+          socket.onopen = () => {
+            _this.disState = false;
+            connState.innerHTML = `成功加入聊天！`;
+          };
+
+          // 监听服务器断开
+          socket.onclose = () => {
+            connState.innerHTML = '退出聊天！';
+            _this.disState = true;
+            socket = null;
+          };
+
+          // 监听服务端异常
+          socket.onerror = () => {
+            connState.innerHTML = '服务错误';
+            socket = null;
+          };
+
+          // 监听服务端广播过来的信息
+          socket.onmessage = msg => {
+            let msgObj = JSON.parse(msg.data);
+            let msgList = document.querySelector('.msg-list');
+            let box = document.createElement('p');
+            if(msgObj.status === 0) {
+              box.innerHTML = `${msgObj.nickname}在<i style="font-size:12px;color:#666;padding: 0 10px;">[${msgObj.time}]</i>退出聊天`;
+
+            } else {
+              box.innerHTML = `${msgObj.nickname}在<i style="font-size:12px;color:#666;padding: 0 10px;">[${msgObj.time}]</i>说：${msgObj.message}`
+            }
+
+            box.style.borderBottom = '1px dashed #e8e8e8';
+            box.style.lineHeight = '30px';
+            box.style.padding = '20px';
+
+            msgList.appendChild(box);
           }
-        });
+
+        }
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      closeSocket() {
+        if(this.socket) {
+          this.socket.close();
+          this.socket = null;
+        }
+      },
+      sendMsg() {
+        let name = document.getElementById('nickname');
+        let msgBox = document.getElementById('msg-box');
+
+        let myDate = new Date();
+        let now = (myDate.getMonth()+1) + '-' + myDate.getDate() + ' ' + myDate.getHours() + ':' + myDate.getMinutes() + ':' + myDate.getSeconds();
+
+        let msg = {
+          nickname: name.value,
+          message: msgBox.value,
+          time: now
+        };
+
+        if(!this.socket) {
+          this.uts.notice('error','请先连接socket服务器!');
+        } else {
+          if(msg.message === '') {
+            this.uts.msg('error', '消息是空的！');
+          } else {
+            this.socket.send(JSON.stringify(msg));
+          }
+        }
+
+
+
       }
     }
   }
@@ -114,8 +149,4 @@
 
 </script>
 
-<style scoped>
 
-
-
-</style>

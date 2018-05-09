@@ -5,7 +5,7 @@
 
     <div class="head-top">
       <div class="left">
-        Hi，欢迎来到 <span class="red">盛吉祥</span>的博客，今天是 <b>{{ date }}</b>
+        今天是 <b>{{ date }}</b>
       </div>
       <div class="right">
         <i class="el-icon el-icon-menu"></i>

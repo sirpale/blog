@@ -19,11 +19,8 @@ del,ins,u,s,a,a:hover{text-decoration:none;}
 body,textarea,input,button,select,keygen,legend{font:12px/1.14 "Microsoft YaHei",\5b8b\4f53;color:#333;outline:0;}
 body{background:#f2f2f2;}
 a,a:hover{color:#333;transition:all .2s ease-in;}
-
 .clear {clear:both;line-height:0;height:0;}
-
 .red {color:red;}
-
 .fa-spinner {animation:fa-spin .5s infinite steps(8)}
 
 
@@ -45,21 +42,26 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 .yzm {cursor:pointer;}
 
 #app {padding:0;margin:0;}
-.head-top {box-sizing:border-box;height:30px;line-height:30px;font-size:14px;background:#333;color:#ddd;border-bottom:#e6e6e6;
+.head-top {
+  box-sizing:border-box;
+  height:30px;
+  line-height:30px;
+  font-size:14px;
+  color:#333;
+  border:#e6e6e6;
   .left {float:left;padding:0 20px;
     span {padding: 0 10px;}
-    b {font-weight:500;color: #fff;}
+    b {font-weight:500;}
   }
   .right {float:right;padding:0 20px;height:30px;overflow:hidden;
     i.el-icon-menu {display:none;margin-top:2px;cursor:pointer;}
-    button.login-btn {padding:0;color:#ddd;}
+    button.login-btn {padding:0;}
     a {display:block;float:right;}
     .login-after {
       a {
-        color:#eee;
         display: inline;
         float:right;
-        &:hover {color:#fff}
+        &:hover {color: #2b8aff;}
       }
     }
   }
@@ -93,11 +95,18 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
 
 .content-card {min-height:300px;}
 
-.home-left {width:80%;}
-.home-right {width:20%;padding-left:10px;}
+.home-left {width:75%;}
+.home-right {width:25%;padding-left:10px;}
 
-.nav {box-sizing:border-box;
-  .home-menu {padding:0 20px;}
+.nav {box-sizing:border-box;background:#fff;overflow:hidden;
+  .b-nav {
+    .left {float:left;width:50%;}
+    .right {float:right;width:50%;
+      .home-menu {}
+    }
+
+  }
+
   .sub-menu {display:none;}
 }
 
@@ -119,7 +128,7 @@ a,a:hover{color:#333;transition:all .2s ease-in;}
       i.el-icon {display:block;float:left;font-size:1.5rem;}
     }
   }
-  .home-menu {display:none;}
+  .b-nav {display:none;}
   .home-left {width:100%;}
   .home-right {display:none;}
 }

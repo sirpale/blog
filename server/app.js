@@ -1,3 +1,6 @@
+const fs = require('fs');
+const request = require('request');
+const cheerio = require('cheerio');
 const createError = require('http-errors');
 const express = require('express');
 const ejs = require('ejs');
@@ -41,7 +44,6 @@ app.use(session({
   saveUninitialized: false,
   store: sessionStore
 }));
-
 
 
 // socket服务器
@@ -114,5 +116,26 @@ app.set('port', process.env_PORT || 3000);
 app.listen(app.get('port'), () => {
   console.log('服务器已开启，端口号：' + app.get('port'));
 });
+
+// let spider = url => {
+//   return new Promise((resolve, reject) => {
+//     request(url, (error, res, body) => {
+//       resolve(body);
+//     });
+//   });
+// };
+//
+// (async () => {
+//   let dom = await spider('http://www.lanrentuku.com/');
+//   let $ = cheerio.load(dom);
+//
+//   $('img', '.in-ne').each((i, e) => {
+//     let src = $(e).attr('src');
+//     let name = src.substr(src.lastIndexOf('/') + i);
+//     request(src).pipe(fs.createWriteStream(name));
+//   });
+//
+// })()
+
 
 module.exports = app;

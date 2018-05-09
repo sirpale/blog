@@ -22,7 +22,7 @@
           </el-button>
         </h3>
         <span class="author">
-        <i class="fa fa-edit"></i>&nbsp;
+        <i class="fa fa-user"></i>&nbsp;
         {{article.author}} &nbsp;
         <i class="fa fa-calendar"></i>&nbsp;
         {{ article.createTime }}&nbsp;

@@ -13,7 +13,7 @@ export default {
     show: false,
     dialogShow: false,
     msg: '提示信息',
-    noData: '数据加载中',
+    noData: '加载中...',
     isDisabled: true,
     // 验证码地址
     codeUrl: 'code',

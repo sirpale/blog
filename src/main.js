@@ -14,7 +14,7 @@ import metaInfo from 'vue-meta-info'
 import Utils from './assets/js/utils'
 import Urls from './assets/js/urls'
 
-// import mavonEditor from 'mavon-editor';
+import mavonEditor from 'mavon-editor';
 import vueQuillEditor from 'vue-quill-editor'
 import hljs from 'highlight.js'
 // import $ from 'jquery';
@@ -22,7 +22,7 @@ import hljs from 'highlight.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css';
-// import 'mavon-editor/dist/css/index.css'
+import 'mavon-editor/dist/css/index.css'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
@@ -35,7 +35,7 @@ Vue.use(metaInfo);
 Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.use(vueQuillEditor);
-
+Vue.use(mavonEditor);
 
 let Hub = new Vue();
 

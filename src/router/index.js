@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Err from '@/pages/error';
+
 import Home from '@/pages/home';
 import Say from '@/pages/say';
 import Net from '@/pages/net';
@@ -24,6 +26,14 @@ Vue.use(Router);
 const router = new Router({
   mode: 'history',
   routes: [
+    // {
+    //   path: '',
+    //   name: 'Err',
+    //   component: Err,
+    //   meta: {
+    //     title: '错误提示'
+    //   }
+    // },
     {
       path: '/',
       name: 'Home',

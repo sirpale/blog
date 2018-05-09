@@ -3,13 +3,21 @@ export default {
   name: "home",
   metaInfo () {
     return {
-      title: this.pageName,
-      meta: [
-        {
-          name: 'keywords',
-          content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
-        }
-      ]
+      // title: this.pageName
+      // meta: [
+      //   {
+      //     name: 'keywords',
+      //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+      //   },
+      //   {
+      //     name: 'viewport',
+      //     content: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'
+      //   },
+      //   {
+      //     name: 'description',
+      //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+      //   }
+      // ]
     }
   },
   components: {},
@@ -17,40 +25,34 @@ export default {
     return {
       pageName: '首页-盛吉祥的博客',
       dPage : 1,
-      dSize: 6,
+      dSize: 10,
       page : 1,
-      size : 6,
+      size : 10,
       total : 1,
       sw: true,
       messages: [
         {
           name: '瞄不二',
           avaImg: '../assets/img/ava.jpg',
-          content: '网站很简洁，风格清新，我很喜欢...',
+          content: '网站很简洁，风格清新',
           time: '12:23'
         },
         {
           name: '瞄不二',
           avaImg: '../assets/img/ava.jpg',
-          content: '网站很简洁，风格清新，我很喜欢...',
+          content: '想销毁还不容易，直接拿榔头杂碎了',
           time: '12:23'
         },
         {
           name: '瞄不二',
           avaImg: '../assets/img/ava.jpg',
-          content: '网站很简洁，风格清新，我很喜欢...',
+          content: '这很流比啊 ， 赖(nai)流(niu)的流哈哈',
           time: '12:23'
         },
         {
           name: '瞄不二',
           avaImg: '../assets/img/ava.jpg',
-          content: '网站很简洁，风格清新，我很喜欢...',
-          time: '12:23'
-        },
-        {
-          name: '瞄不二',
-          avaImg: '../assets/img/ava.jpg',
-          content: '网站很简洁，风格清新，我很喜欢...',
+          content: '终于搞懂了，之前改了好久改不好',
           time: '12:23'
         }
       ]
@@ -108,8 +110,6 @@ export default {
         } else {
           _this.sw = false;
         }
-
-
 
       }
     },

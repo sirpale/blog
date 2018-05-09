@@ -12,6 +12,9 @@
         <el-form-item label="简介：">
           <el-input type="textarea" v-model="form.intro"   rows="2"/>
         </el-form-item>
+        <el-form-item label="封面图片：">
+          <el-input type="file"  v-model="form.cover"/>
+        </el-form-item>
 
         <el-form-item label="是否显示：">
           <el-switch

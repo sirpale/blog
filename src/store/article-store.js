@@ -13,6 +13,7 @@ export default {
       name: '',
       title: '',
       content : '',
+      cover: '',
       isShow: true,
       tags: ['javascript'],
       intro: '',
