@@ -1,3 +1,4 @@
+const compress = require('compression');
 const fs = require('fs');
 const request = require('request');
 const cheerio = require('cheerio');
@@ -29,6 +30,7 @@ app.engine('html',ejs.renderFile);
 app.set('view engine', 'html');
 
 // app.use(multer({dest: 'uploads/'}));
+app.use(compress());
 
 app.use(logger('dev'));
 app.use(express.json());

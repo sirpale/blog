@@ -83,7 +83,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         viewport: 'width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no',
         keywords: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站',
         description: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站',
-        author:'Sirpale'
+        author:'盛吉祥'
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'

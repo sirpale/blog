@@ -3,8 +3,7 @@
     <el-row>
       <el-col class="home-left"
               v-loading="loading"
-              element-loading-text = '内容正在加载中...'
-              element-loading-background="rgba(255,255,255)"
+              element-loading-text = '加载中...'
       >
         <el-card  v-show="list.length === 0" class="no-data">{{noData}}</el-card>
         <el-row class="grid-content" v-for="(item,index) in list" :key="index">
@@ -24,8 +23,8 @@
             </el-col>
             <el-col :span="20">
               <div class="right grid-content">
-                <router-link :to="{path: `/detail/${item.id}`}" target="_blank" class="title" >{{item.title}}</router-link>
-                <p>{{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}">【详细】</router-link></p>
+                <router-link :to="{path: `/detail/${item.id}`}" class="title" target="_blank">{{item.title}}</router-link>
+                <p>{{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}" target="_blank">【详细】</router-link></p>
                 <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
                 <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
                 <span>
