@@ -17,5 +17,9 @@ const Polling = require('./pooling');
 // })();
 
 
+// 搜索
+// DB.row('SELECT * FROM fulltext_sample WHERE copy like \'%银行%\' or \'%上海%\' order by copy desc; ');
+
+
 
 

@@ -32,5 +32,8 @@ export default {
   GET_ARTICLE_LIST: `${API}/getArticleList`,
 
   // 获取文章详情
-  GET_ARTICLE: `${API}/getArticle`
+  GET_ARTICLE: `${API}/getArticle`,
+
+  // 搜索相关文章
+  SEARCH_ARTICLE: `${API}/searchArticle`
 }

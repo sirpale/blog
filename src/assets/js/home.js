@@ -64,7 +64,9 @@ export default {
       noData: state => state.gb.noData,
       list : state => state.article.list,
       show: state => state.article.show,
-      timeout: state => state.article.timeout
+      timeout: state => state.article.timeout,
+      searchShow: state => state.gb.searchShow,
+      searchList: state => state.gb.searchList
     })
   },
   methods: {
@@ -128,7 +130,7 @@ export default {
       let docHeight = document.documentElement.offsetHeight || document.body.offsetHeight;
 
       // 判断是否滚动到底部
-      if(bodyScrollTop + dHeight >= docHeight) {
+      if(bodyScrollTop + dHeight >= docHeight && !_this.searchShow) {
         setTimeout(()=>{
           _this.getMore(_this.page, _this.size);
         },300);

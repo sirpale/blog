@@ -318,6 +318,36 @@ class User {
     });
 
   }
+
+  // 搜索文章
+  searchArticle(keyWord, callback) {
+    return new Promise((resolve,reject) => {
+      Pool.getConnection((err, conn) => {
+        if(err) {
+          conn.release();
+          callback(err, null);
+          reject(err);
+        }
+
+        let sql = sqlString.format(`SELECT * FROM b_article1 WHERE title like "%${keyWord}%" order by update_time desc`);
+
+        conn.query(sql,(err, res) => {
+          conn.release();
+
+          // console.log(res);
+          if(res) {
+            callback(err, res);
+            resolve(res);
+          } else {
+            callback(err, null);
+            reject(res);
+          }
+
+        });
+
+      });
+    });
+  }
 }
 
 

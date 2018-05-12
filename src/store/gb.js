@@ -12,6 +12,8 @@ export default {
     loading: true,
     show: false,
     dialogShow: false,
+    searchShow: false,
+    searchList: [],
     msg: '提示信息',
     noData: '加载中...',
     isDisabled: true,
@@ -49,6 +51,16 @@ export default {
       // 获取主机名
       let hostName = window.location.hostname;
       state.code = `http://${hostName}:${state.port}/${code}`;
+    },
+
+    // 显示搜索内容
+    SET_SEARCH_SHOW : (state, show) => {
+      state.searchShow = show;
+    },
+
+    // 搜索文章列表
+    SET_SEARCH_LIST: (state, list) => {
+      state.searchList = list;
     }
   },
   actions: {
@@ -74,6 +86,12 @@ export default {
 
       code = `${code}?n=${Math.floor(Math.random()*10000)}`;
       commit('SET_CODE', code);
+    },
+    setSearchShow({commit}, show) {
+      commit('SET_SEARCH_SHOW', show);
+    },
+    setSearchList({commit}, list) {
+      commit('SET_SEARCH_LIST', list);
     }
 
   },

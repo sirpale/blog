@@ -35,6 +35,48 @@ module.exports = app => {
     });
   });
 
+  // 搜索
+  app.post('/searchArticle',(req, res) => {
+
+    let info = {
+      status:'error',
+      message: '搜索文章失败！'
+    };
+
+    let keyWord = req.body.keyWord;
+
+    let user = new User({});
+
+
+    user.searchArticle(keyWord,(err,rs) => {
+      if (rs) {
+        if (rs.length > 0) {
+          for (let i = 0; i < rs.length; i++) {
+            rs[i]['id'] = rs[i]['article_id'];
+            rs[i]['title'] = htmlEscaper.unescape(rs[i]['title']);
+            rs[i]['content'] = htmlEscaper.unescape(rs[i]['content']);
+            // rs[i]['content'] = rs[i]['content'];
+            rs[i]['intro'] = htmlEscaper.unescape(rs[i]['intro']).replace(/<[^<>]+>/g, '');
+            // rs[i]['intro'] = rs[i]['intro'].replace(/<[^<>]+>/g,'');
+            rs[i]['createTime'] = Dte.timeStampToTime(rs[i]['create_time']);
+            rs[i]['postNum'] = rs[i]['post_num'];
+          }
+
+
+          info = {
+            status : 'success',
+            message: '搜索文章成功',
+            data: rs
+          }
+
+        }
+
+      }
+
+      res.send(info);
+    });
+  });
+
   // 获取文章列表
   app.get('/getArticleList', (req, res, next) => {
     let user = new User({});

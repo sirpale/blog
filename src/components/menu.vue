@@ -6,11 +6,10 @@
           <router-link to="/"><img src="../assets/img/logo.png" style="width:138px;height:44px;" alt=""></router-link>
         </div>
         <div class="search-warp">
-          <el-input type="text" class="sc" @focus="scFocus" @blur="scBlur" style="width:100px;margin:10px 0 0 30px" placeholder="搜索" />
-          <el-button class="fa fa-search" @click="" />
+          <el-input type="text" class="sc" @keyup.native="scSub($event)" v-model="keyWord"  style="width:200px;margin:10px 0 0 30px" placeholder="搜索" />
+          <!--<el-button class="fa fa-search" @click="" />-->
         </div>
       </div>
-
       <div class="right">
         <el-menu
           class="home-menu"
@@ -46,10 +45,6 @@
     </div>
 
 
-
-
-
-
   </div>
 </template>
 
@@ -60,22 +55,69 @@
   export default {
     data() {
       return {
-        activeIndex: this.$router.history.current.path
+        activeIndex: this.$router.history.current.path,
+        keyWord: '',
+        oldList: [],
+        last: 0
       }
     },
     computed: {
       ...mapState({
         isLogin : state => state.login.isLogin,
-        loginName:  state => state.login.loginName
+        loginName:  state => state.login.loginName,
+        list: state => state.article.list,
+        searchShow: state => state.gb.searchShow,
+        searchList: state => state.gb.searchList
       })
     },
+    created() {},
     mounted() {},
+    watch: {
+      keyWord: function(val, oldVal) {
+        let _this = this;
+
+      }
+    },
     methods: {
-      ...mapActions(['setArticleID']),
+      ...mapActions([
+        'setArticleID',
+        'setList',
+        'setSearchShow',
+        'setSearchList'
+      ]),
       handleSelect(key, keyPath) {},
       jumpToSubArticle() {
         this.setArticleID(null);
         this.$router.push({path: `/sub-article`});
+      },
+      scSub(e) {
+        let _this = this;
+
+        _this.last = e.timeStamp;
+
+        if(_this.keyWord !== '') {
+          setTimeout(() => {
+            if(_this.last - e.timeStamp === 0) {
+              _this.uts.post(_this.urls.SEARCH_ARTICLE,{keyWord: _this.keyWord},res => {
+                // 失败处理
+              }).then(d => {
+                let dt = d.data;
+
+                if(dt.status === 'success' && dt.data) {
+                  _this.setSearchShow(true);
+                  _this.setSearchList(dt.data);
+                } else {
+                  _this.setSearchList([]);
+                }
+
+              });
+            }
+
+          },500);
+        } else {
+          _this.setSearchShow(false);
+          _this.setSearchList([]);
+        }
       },
       scFocus() {
 
