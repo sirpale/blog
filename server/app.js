@@ -87,7 +87,6 @@ wss.broadcast = function broadcast(_messageObj) {
 
 route(app);
 
-
 // app.use(multer());
 app.use(express.static(path.join(__dirname, '/')));
 
@@ -106,8 +105,6 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 
 // 添加服务器端口

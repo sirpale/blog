@@ -11,16 +11,64 @@ import store from './store'
 import metaInfo from 'vue-meta-info'
 
 
-import Utils from './assets/js/utils'
-import Urls from './assets/js/urls'
-
 import mavonEditor from 'mavon-editor';
 import vueQuillEditor from 'vue-quill-editor'
 import hljs from 'highlight.js'
-// import $ from 'jquery';
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import  {
+  Button,
+  Dialog,
+  Input,
+  Menu,
+  MenuItem,
+  Row,
+  Col,
+  Card,
+  Tabs,
+  TabPane,
+  Tag,
+  Form,
+  FormItem,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
+  Switch,
+  Loading,
+  Message,
+  MessageBox,
+  Notification
+} from 'element-ui';
+
+Vue.use(Button);
+Vue.use(Dialog);
+Vue.use(Input);
+Vue.use(Menu);
+Vue.use(MenuItem);
+Vue.use(Row);
+Vue.use(Col);
+Vue.use(Card);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Tag);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Checkbox);
+Vue.use(Switch);
+Vue.use(CheckboxButton);
+Vue.use(CheckboxGroup);
+
+Vue.use(Loading.directive);
+
+Vue.prototype.$loading = Loading.service;
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$notify = Notification;
+Vue.prototype.$message = Message;
+
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 import 'font-awesome/css/font-awesome.min.css';
 import 'mavon-editor/dist/css/index.css'
 import 'quill/dist/quill.core.css'
@@ -31,8 +79,12 @@ import 'highlight.js/styles/default.css'
 
 import '@/assets/css/base.scss';
 
+
+import Utils from './assets/js/utils'
+import Urls from './assets/js/urls'
+
 Vue.use(metaInfo);
-Vue.use(ElementUI);
+
 Vue.use(Vuex);
 Vue.use(vueQuillEditor);
 Vue.use(mavonEditor);

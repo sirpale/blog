@@ -17,6 +17,7 @@ const ccap = require('ccap')({
     for (let i = 0; i < max; i++) {
       newStr += arr[Math.round(Math.random() * (arr.length - 1))];
     }
+
     return newStr;//return the captcha text
 
   }
@@ -47,7 +48,6 @@ module.exports = app => {
 
     let user = new User({});
 
-
     user.searchArticle(keyWord,(err,rs) => {
       if (rs) {
         if (rs.length > 0) {
@@ -75,6 +75,7 @@ module.exports = app => {
 
       res.send(info);
     });
+
   });
 
   // 获取文章列表

@@ -1,9 +1,16 @@
 import {mapState, mapActions} from 'vuex';
+// import Editor from '@/components/editor';
 
 export default {
   data() {
-    return {}
+    return {
+      // canCrop: false,
+      // // 测试上传接口，返回结构为(url:'')
+      // uploadUrl: '/api/upload',
+      // content: ''
+    }
   },
+  // components: {Editor},
   computed: {
     ...mapState({
       editorOption: state => state.editor.editorOption,
@@ -34,7 +41,7 @@ export default {
     subArticle() {
       let _this = this;
 
-      if(_this.name && _this.name !== '') {
+      if(_this.name && _this.name !== '' && _this.form.content !== '') {
 
           _this.uts.post(_this.urls.SUB_ARTICLE, _this.form, res => {
             // 错误处理
@@ -92,7 +99,6 @@ export default {
 
     // 判断是否有存储的文章数据，没有就重新获取
     if(_this.id && _this.form.title === '') {
-
       _this.uts.get(`${_this.urls.GET_ARTICLE}?id=${_this.id}`,{}, res => {
         // 失败处理
       }).then(d => {

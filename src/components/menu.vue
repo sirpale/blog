@@ -35,15 +35,12 @@
       </div>
     </div>
 
-
-
     <div class="sub-menu">
       <ul><li><router-link :to="{path:'/'}">首页</router-link></li></ul>
       <ul><li><router-link :to="{path:'/tool'}">工具</router-link></li></ul>
       <ul><li><router-link :to="{path:'/message'}">留言板</router-link></li></ul>
       <!--<ul><li><router-link v-show="loginName" :to="{path:`/user/${loginName}`}">个人中心</router-link></li></ul>-->
     </div>
-
 
   </div>
 </template>
@@ -75,7 +72,6 @@
     watch: {
       keyWord: function(val, oldVal) {
         let _this = this;
-
       }
     },
     methods: {
@@ -119,18 +115,8 @@
           _this.setSearchList([]);
         }
       },
-      scFocus() {
-
-        let sc = document.querySelector('.sc');
-
-        sc.style.width = '200px';
-
-      },
-      scBlur() {
-        let sc = document.querySelector('.sc');
-
-        sc.style.width = '100px';
-      }
+      scFocus() {},
+      scBlur() {}
     }
   }
 </script>

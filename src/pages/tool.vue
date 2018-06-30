@@ -1,5 +1,14 @@
 <template>
   <el-card class="box-card content-card">
+    <!--<div :style="{fontSize:postFontSize+'em'}">-->
+      <!--<Demo-->
+        <!--v-for="post in posts"-->
+        <!--:key="post.id"-->
+        <!--:post="post"-->
+        <!--@enlarge-text="onEnlargeText"-->
+      <!--/>-->
+    <!--</div>-->
+
     <div class="socket-box">
       <p class="conn-state" ></p>
       <el-button @click="connectSocket" :disabled="!disState" class="conn">进入聊天</el-button>
@@ -37,13 +46,25 @@
 <script>
   import {mapState, mapActions} from 'vuex';
 
+  import Demo from './demo';
+
   export default {
     data() {
       return {
+        total:0,
         wsUrl:  location.hostname,
         socket: null,
-        disState: true
+        disState: true,
+        posts: [
+          { id: 1, title: 'My journey with Vue', content:'1111' },
+          { id: 2, title: 'Blogging with Vue', content:'222' },
+          { id: 3, title: 'Why Vue is so fun', content: '3333' }
+        ],
+        postFontSize: 1
       }
+    },
+    components: {
+      Demo
     },
     methods: {
       connectSocket() {
@@ -141,6 +162,9 @@
 
 
 
+      },
+      onEnlargeText(enlargeAmount) {
+        this.postFontSize += enlargeAmount;
       }
     }
   }

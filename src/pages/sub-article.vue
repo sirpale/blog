@@ -42,6 +42,13 @@
           <!--<mavon-editor v-model="form.content" :ishljs = "true" style="height:400px;"/>-->
           <!--<el-input type="textarea" v-model="form.content" rows="10" />-->
           <div class="quill-editor-example">
+            <!--<input type="button" value="切换裁剪" @click="canCrop=!canCrop">-->
+            <!--<Editor-->
+              <!--ref="myTextEditor"-->
+              <!--:canCrop="canCrop"-->
+              <!--:uploadUrl="uploadUrl"-->
+              <!--v-model="content"-->
+            <!--&gt;</Editor>-->
             <!-- quill-editor -->
             <quill-editor v-model="form.content"
                           :options="editorOption"
@@ -51,9 +58,7 @@
                           style="height:300px;"
             >
             </quill-editor>
-            <div class="quill-code">
-              <!--<code class="hljs" v-html=""></code>-->
-            </div>
+
           </div>
         </el-form-item>
         <el-form-item label="验证码：">

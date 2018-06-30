@@ -1,9 +1,16 @@
-'use strict'
-const path = require('path')
-const utils = require('./utils')
-const config = require('../config')
+'use strict';
+const path = require('path');
+const utils = require('./utils');
+const config = require('../config');
 const webpack = require('webpack');
-const vueLoaderConfig = require('./vue-loader.conf')
+
+const chalk = require('chalk');
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+
+const vueLoaderConfig = require('./vue-loader.conf');
+
+
+require('babel-polyfill');
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
@@ -14,7 +21,11 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    vendor : [
+      'vue','vue-router','vuex','axios',
+      'mavon-editor','vue-quill-editor','highlight.js'
+    ],
+    app: ['babel-polyfill','./src/main.js']
   },
   output: {
     path: config.build.assetsRoot,
@@ -87,10 +98,21 @@ module.exports = {
     child_process: 'empty'
   },
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
+    // new ProgressBarPlugin({
+    //   format: 'build [:bar]' +'(:msg)'+ chalk.green.bold(':percent') + ' (:elapsed seconds)',
+    //   complete: '***',
+    //   clear: false,
+    //   callback: function() {
+    //     console.log('---编译完成---')
+    //   }
+    // }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: Infinity
+    }),
     new webpack.ProvidePlugin({
       jQuery : 'jquery',
       $ : 'jquery'
     })
   ]
-}
+};

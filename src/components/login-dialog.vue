@@ -5,13 +5,14 @@
              :visible="dialogShow"
              :before-close="dialogClose"
   >
+
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane label="登录" name="login">
         <el-form :model="form" ref="form" :rules="rules" :label-width="formLabelWidth">
-          <el-form-item label="*用户名：" prop="name">
+          <el-form-item label="用户名：" prop="name">
             <el-input v-model.trim="form.name" auto-complete="off" />
           </el-form-item>
-          <el-form-item label="*密码：" prop="password" >
+          <el-form-item label="密码：" prop="password" >
             <el-input v-model.trim="form.password" auto-complete="off" type="password" />
           </el-form-item>
           <el-form-item label="验证码：" prop="code">
@@ -29,13 +30,13 @@
       </el-tab-pane>
       <el-tab-pane label="注册" name="reg">
         <el-form :model="form" :rules="rules" ref="form" :label-width="formLabelWidth">
-          <el-form-item label="*用户名："  prop="name">
+          <el-form-item label="用户名："  prop="name">
             <el-input v-model.trim="form.name" auto-complete="off" />
           </el-form-item>
-          <el-form-item label="*密码：" prop="password">
+          <el-form-item label="密码：" prop="password">
             <el-input v-model.trim="form.password" auto-complete="off" type="password" />
           </el-form-item>
-          <el-form-item label="*确认密码：" prop="repassword">
+          <el-form-item label="确认密码：" prop="repassword">
             <el-input v-model.trim="form.repassword"  auto-complete="off" type="password" />
           </el-form-item>
           <el-form-item label="提示问题：" prop="question">
