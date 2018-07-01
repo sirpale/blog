@@ -6,28 +6,29 @@ import {mapState, mapActions} from 'vuex';
 
 export default {
   name: "home",
-  metaInfo () {
-    return {
-      // title: this.pageName
-      // meta: [
-      //   {
-      //     name: 'keywords',
-      //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
-      //   },
-      //   {
-      //     name: 'viewport',
-      //     content: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'
-      //   },
-      //   {
-      //     name: 'description',
-      //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
-      //   }
-      // ]
-    }
-  },
+  // metaInfo () {
+  //   return {
+  //     // title: this.pageName
+  //     // meta: [
+  //     //   {
+  //     //     name: 'keywords',
+  //     //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+  //     //   },
+  //     //   {
+  //     //     name: 'viewport',
+  //     //     content: 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no'
+  //     //   },
+  //     //   {
+  //     //     name: 'description',
+  //     //     content: '盛吉祥的个人博客，发表日常记录，记录个人成长，工作经验总结，个人原创网站'
+  //     //   }
+  //     // ]
+  //   }
+  // },
   components: {},
   data() {
     return {
+      coverUrl: location.port === '8080'  ? 'http://localhost:3000/uploads/' : '../uploads/',
       pageName: '首页-盛吉祥的博客',
       dPage : 1,
       dSize: 10,
@@ -140,6 +141,28 @@ export default {
           _this.getMore(_this.page, _this.size);
         },300);
       }
+    },
+    showImage() {
+
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let imgs = document.querySelectorAll('.lazy-img');
+      for(let i=0;i<imgs.length;i++) {
+        if(!imgs[i].isLoad && this.getTop(imgs[i]) < scrollTop + document.documentElement.clientHeight) {
+            imgs[i].src = imgs[i].getAttribute('data-src');
+            imgs[i].isLoad = true;
+        }
+      }
+
+
+    },
+    getTop(obj) {
+      let iTop = 0;
+      while(obj) {
+        iTop += obj.offsetTop;
+        obj = obj.offsetParent;
+      }
+
+      return iTop;
     }
   },
   watch: {
@@ -159,5 +182,11 @@ export default {
     let _this = this;
     window.removeEventListener('scroll',_this.scrollLoad,false);
   },
-  mounted() {}
+  mounted() {
+    // this.showImage();
+
+    window.onload = this.showImage;
+    // this.showImage();
+    window.onscroll = this.showImage;
+  }
 }

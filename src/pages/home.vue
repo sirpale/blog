@@ -1,3 +1,7 @@
+<style lang="scss" scoped>
+  @import '../assets/css/home.scss';
+</style>
+
 <template>
   <div id="home">
     <el-row>
@@ -10,59 +14,62 @@
 
         <!-- 文章列表 -->
         <el-row v-show="!searchShow" class="grid-content" v-for="(item,index) in list" :key="`s-${index}`">
+          <router-link :to="{path: `/detail/${item.id}`}" class="title" target="_blank" :title="item.title">
+            <el-card class="box-card list-home" >
+              <el-col :span="4" v-if="item.cover">
+                <div class="left grid-content" >
+                  <!--<a href="javascript:void(0);" @click="jumpToDetail(item.id)">-->
+                    <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
+                  <!--</a>-->
+                  <!--<img v-if="!item.cover " data-src="../assets/img/list1.jpg" :alt="item.title">-->
+                  <img class="lazy-img" :data-src="coverUrl + item.cover" alt="">
 
-          <el-card class="box-card list-home" >
-            <el-col :span="4">
-              <div class="left grid-content">
-                <!--<a href="javascript:void(0);" @click="jumpToDetail(item.id)">-->
-                  <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
-                <!--</a>-->
-                <router-link :to="{path:`/detail/${item.id}`}" :title="item.title">
-                  <img src="../assets/img/list1.jpg" :alt="item.title">
-                </router-link>
-              </div>
-            </el-col>
-            <el-col :span="20">
-              <div class="right grid-content">
-                <router-link :to="{path: `/detail/${item.id}`}" class="title" target="_blank" :title="item.title">{{item.title}}</router-link>
-                <p>{{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}" target="_blank" :title="item.title">【详细】</router-link></p>
-                <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
-                <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
-                <span>
-                  <i class="fa fa-user"></i>&nbsp;
-                  <b>{{ item.author }}</b> &nbsp;
-                  <i class="fa fa-calendar"></i>&nbsp;
-                  {{ item.createTime }}&nbsp;
-                  <i class="fa fa-eye"></i>&nbsp;
-                  <em>{{ item.hits }}</em> &nbsp;
-                  <!--<i class="el-icon-edit-outline"></i>&nbsp;-->
-                  <!--<i>{{ item.postNum }}</i>-->
-                </span>
-              </div>
-            </el-col>
-          </el-card>
+                </div>
+              </el-col>
+              <el-col :span="item.cover ? 20 : 24">
+                <div class="right grid-content">
+                  <b class="title">{{item.title}}</b>
+                  <p>{{item.intro}}</p>
+                  <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
+                  <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
+                  <span>
+                    <i class="fa fa-user"></i>&nbsp;
+                    <b>{{ item.author }}</b> &nbsp;
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    {{ item.createTime }}&nbsp;
+                    <i class="fa fa-eye"></i>&nbsp;
+                    <em>{{ item.hits }}</em> &nbsp;
+                    <!--<i class="el-icon-edit-outline"></i>&nbsp;-->
+                    <!--<i>{{ item.postNum }}</i>-->
+                  </span>
+                </div>
+              </el-col>
+            </el-card>
+          </router-link>
+
         </el-row >
         <p v-show="sw && !searchShow" class="loadMore"><i class="fa fa-spinner"></i>&nbsp;加载中...</p>
 
         <el-card  v-show="searchShow && searchList.length === 0" class="no-data">没有搜索到内容</el-card>
         <!-- 搜索文章列表 -->
         <el-row v-show="searchShow" class="grid-content" v-for="(item,index) in searchList" :key="index">
-
-          <el-card class="box-card list-home" >
-            <el-col :span="4">
+          <router-link :to="{path: `/detail/${item.id}`}" target="_blank">
+            <el-card class="box-card list-home" >
+            <el-col v-if="item.cover" :span="4">
               <div class="left grid-content">
                 <!--<a href="javascript:void(0);" @click="jumpToDetail(item.id)">-->
                 <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
                 <!--</a>-->
-                <router-link :to="{path:`/detail/${item.id}`}">
-                  <img src="../assets/img/list1.jpg" alt="">
-                </router-link>
+                <!--<img v-if="!item.cover" src="../assets/img/list1.jpg" :alt="item.title">-->
+                <img class="lazy-img" :data-src="coverUrl + item.cover" alt="">
               </div>
             </el-col>
-            <el-col :span="20">
+            <el-col :span="item.cover ? 20 : 24">
               <div class="right grid-content">
-                <router-link :to="{path: `/detail/${item.id}`}" class="title" target="_blank">{{item.title}}</router-link>
-                <p>{{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}" target="_blank">【详细】</router-link></p>
+                <b class="title">{{item.title}}</b>
+                <p>
+
+                {{item.intro}}...<router-link :to="{path: `/detail/${item.id}`}" target="_blank">【详细】</router-link></p>
                 <!--<a href="/detail/{{item.id}}" class="title">{{ item.title }}</a>-->
                 <!--<p>{{ item.intro}}...<a href="javascript:void(0);" @click="jumpToDetail(item.id)">【详细】</a></p>-->
                 <span>
@@ -78,6 +85,7 @@
               </div>
             </el-col>
           </el-card>
+          </router-link>
 
         </el-row >
 
@@ -199,6 +207,4 @@
 
 <script src="@/assets/js/home.js"></script>
 
-<style lang="scss" scoped>
-  @import '../assets/css/home.scss';
-</style>
+

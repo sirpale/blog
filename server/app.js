@@ -2,6 +2,7 @@ const compress = require('compression');
 const fs = require('fs');
 const request = require('request');
 const cheerio = require('cheerio');
+const multer = require('multer');
 const createError = require('http-errors');
 const express = require('express');
 const ejs = require('ejs');
@@ -13,20 +14,20 @@ const MySQLStore = require('express-mysql-session')(session);
 const config = require('./db/config');
 const route = require('./routes/index');
 
-const sessionStore = new MySQLStore(Object.assign(config,{}));
+const sessionStore = new MySQLStore(Object.assign(config, {}));
 
 const app = express();
 const server = require('http').Server(app);
 const socketServer = require('ws').Server;
 const wss = new socketServer({
-  server:server,
+  server: server,
   port: 3001
 });
 
 // view engine setup
 // 修改默认引擎
 app.set('views', path.join(__dirname, 'views'));
-app.engine('html',ejs.renderFile);
+app.engine('html', ejs.renderFile);
 app.set('view engine', 'html');
 
 // app.use(multer({dest: 'uploads/'}));
@@ -34,7 +35,7 @@ app.use(compress());
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 app.use(cookieParser('sirpale'));
 app.use(session({
   key: 'blog',
@@ -69,7 +70,7 @@ wss.on('connection', (client) => {
       this.message.status = 0;
       // 把客户端的消息广播给所有在线的用户
       wss.broadcast(this.message);
-    } catch(e) {
+    } catch (e) {
       console.log('刷新页面了');
 
     }
@@ -85,18 +86,34 @@ wss.broadcast = function broadcast(_messageObj) {
   })
 };
 
+
+// 创建文件夹
+let createFolder = folder => {
+  try {
+    // 测试path指定的文件或目录的用户权限，我们用来检测文件是否存在
+    // 如果文件路径不存在将会抛出no such file or directory
+    fs.accessSync(folder);
+  } catch (e) {
+    // 文件夹不存在，以同步的方式创建文件目录
+    fs.mkdirSync(folder);
+  }
+};
+
+const uploadFolder = './uploads/';
+createFolder(uploadFolder);
+
 route(app);
 
-// app.use(multer());
+
 app.use(express.static(path.join(__dirname, '/')));
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

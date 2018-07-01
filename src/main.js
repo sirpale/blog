@@ -8,7 +8,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 
-import metaInfo from 'vue-meta-info'
+// import metaInfo from 'vue-meta-info'
 
 
 import mavonEditor from 'mavon-editor';
@@ -36,7 +36,8 @@ import  {
   Loading,
   Message,
   MessageBox,
-  Notification
+  Notification,
+  Upload
 } from 'element-ui';
 
 Vue.use(Button);
@@ -56,6 +57,7 @@ Vue.use(Checkbox);
 Vue.use(Switch);
 Vue.use(CheckboxButton);
 Vue.use(CheckboxGroup);
+Vue.use(Upload);
 
 Vue.use(Loading.directive);
 
@@ -83,7 +85,7 @@ import '@/assets/css/base.scss';
 import Utils from './assets/js/utils'
 import Urls from './assets/js/urls'
 
-Vue.use(metaInfo);
+// Vue.use(metaInfo);
 
 Vue.use(Vuex);
 Vue.use(vueQuillEditor);

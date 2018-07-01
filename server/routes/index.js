@@ -1,5 +1,26 @@
+const fnv = require('fnv-plus');
+const multer = require('multer');
 const crypto = require('crypto');
 const htmlEscaper = require('html-escaper');
+
+// 使用硬盘存储模式设置存放接受到的文件的路径以及文件名
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // 接收文件后输出的保存路径，不存在则需要创建
+    cb(null, 'uploads');
+  },
+  filename: (req, file, cb) => {
+    // 将保存文件名设置为时间戳 + 文件原名
+    let name = file.originalname;
+    let d = Date.now();
+    // cb(null, fnv.hash(name).str() + name.substring(name.lastIndexOf('.'),name.length));
+    cb(null, d + name.substring(name.lastIndexOf('.'),name.length));
+  }
+});
+
+// 上传图片
+const upload = multer({storage: storage});
+
 
 const ccap = require('ccap')({
   width: 256,//set width,default is 256
@@ -303,6 +324,24 @@ module.exports = app => {
     res.send({status: 'success', message: '退出成功！'});
   });
 
+
+  // 上传单张图片
+  app.post('/uploadimg',upload.single('file'),(req, res, next) => {
+
+    let file = req.file;
+    res.send({
+      status: 'success',
+      message: '上传成功',
+      data: {
+        filename: file.filename,
+        type: file.mimetype,
+        path: file.path,
+        size: file.size
+      }
+    });
+
+  });
+
   // 发表文章
   app.post('/subarticle', (req, res, next) => {
     let user = new User({});
@@ -320,6 +359,7 @@ module.exports = app => {
         rAuthor = req.session.user.name,
         rIsSHow = req.body.isShow,
         rTags = req.body.tags,
+        rCover = req.body.cover,
         rIntro = htmlEscaper.escape(req.body.intro);
 
       // console.log(rContent);
@@ -330,7 +370,8 @@ module.exports = app => {
         isShow: rIsSHow === true ? 1 : 0,
         tags: rTags.join(','),
         createTime: Date.now(),
-        intro: rIntro ? rIntro : rContent.substring(0, 100).replace(reg, '')
+        intro: rIntro ? rIntro : rContent.substring(0, 100).replace(reg, ''),
+        cover: rCover || ''
       };
 
       if (req.body.id) {

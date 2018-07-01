@@ -122,7 +122,8 @@ class User {
         update_time,
         hits,
         post_num,
-        intro
+        intro,
+        cover
         ) values(
         '${article.title}',
         "${article.content}",
@@ -133,7 +134,8 @@ class User {
         '${article.createTime}',
         '${hits}',
         '${postNum}',
-        '${article.intro}'
+        '${article.intro}',
+        '${article.cover}'
         )`);
 
           conn.query(sql, (err, res) => {
@@ -175,7 +177,8 @@ class User {
             update_time=?,
             tags=?,
             is_show=?,
-            intro=? 
+            intro=?,
+            cover=? 
             where 
             article_id=?
             `,
@@ -187,6 +190,7 @@ class User {
             article.tags,
             article.isShow,
             article.intro,
+            article.cover,
             article.id
           ]
           );

@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="container-box">
@@ -13,7 +14,18 @@
           <el-input type="textarea" v-model="form.intro"   rows="2"/>
         </el-form-item>
         <el-form-item label="封面图片：">
-          <el-input type="file"  v-model="form.cover"/>
+          <!--<el-input type="file"  v-model="form.cover"/>-->
+          <el-upload
+            class="uploader"
+            title="点击上传图片"
+            :action="uploadimg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <img v-if="form.cover && !imageUrl" :src="coverUrl+form.cover" class="cover">
+            <img v-if="imageUrl" :src="imageUrl" class="cover">
+            <i v-else class="el-icon-plus uploader-icon"></i>
+          </el-upload>
         </el-form-item>
 
         <el-form-item label="是否显示：">
@@ -73,7 +85,31 @@
   </div>
 
 </template>
+
 <style scoped lang="scss">
+
+  .uploader {
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    img {width:200px;height:150px;border:1px dashed #d9d9d9;border-radius:6px;}
+  }
+
+  .uploader-icon {
+    border: 1px dashed #d9d9d9;
+    border-radius:6px;
+    font-size: 50px;
+    color: #8c939d;
+    width: 200px;
+    height: 150px;
+    line-height: 150px;
+    text-align: center;
+    &:hover {
+      border-color:#409eef;
+      background:#eee;
+    }
+  }
 </style>
 
 

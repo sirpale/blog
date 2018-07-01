@@ -18,7 +18,7 @@ h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
 del,ins,u,s,a,a:hover{text-decoration:none;}
 body,textarea,input,button,select,keygen,legend{font:12px/1.14 "Microsoft YaHei",\5b8b\4f53;color:#333;outline:0;}
 body{background:#f2f2f2;}
-a,a:hover{color:#333;transition:all .2s ease-in;}
+a,a:hover,img {color:#333;transition:all .2s ease-in;}
 .clear {clear:both;line-height:0;height:0;}
 .red {color:red;}
 .fa-spinner {animation:fa-spin .5s infinite steps(8)}
