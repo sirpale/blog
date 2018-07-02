@@ -1,5 +1,6 @@
 <template>
   <el-card class="box-card content-card">
+    <el-button>socket聊天室</el-button>
     <!--<div :style="{fontSize:postFontSize+'em'}">-->
       <!--<Demo-->
         <!--v-for="post in posts"-->
@@ -9,18 +10,18 @@
       <!--/>-->
     <!--</div>-->
 
-    <div class="socket-box">
-      <p class="conn-state" ></p>
-      <el-button @click="connectSocket" :disabled="!disState" class="conn">进入聊天</el-button>
-      <el-button type="warning" @click="closeSocket" :disabled="disState" class="close">退出聊天</el-button><br />
+    <!--<div class="socket-box">-->
+      <!--<p class="conn-state" ></p>-->
+      <!--<el-button @click="connectSocket" :disabled="!disState" class="conn">进入聊天</el-button>-->
+      <!--<el-button type="warning" @click="closeSocket" :disabled="disState" class="close">退出聊天</el-button><br />-->
 
-      名字：<input :disabled="!disState" type="text" id="nickname" /><br />
-      内容：<textarea type="textarea" id="msg-box" rows="10" ></textarea><br/>
+      <!--名字：<input :disabled="!disState" type="text" id="nickname" /><br />-->
+      <!--内容：<textarea type="textarea" id="msg-box" rows="10" ></textarea><br/>-->
 
-      <el-button type="success" @click="sendMsg" :disabled="disState" class="send">提交信息</el-button>
+      <!--<el-button type="success" @click="sendMsg" :disabled="disState" class="send">提交信息</el-button>-->
 
-      <div class="msg-list"></div>
-    </div>
+      <!--<div class="msg-list"></div>-->
+    <!--</div>-->
 
   </el-card>
 </template>

@@ -61,6 +61,7 @@
                 <!--<img src="https://www.talklee.com/zb_users/upload/2018/04/201804191524126621550907.jpg" alt="">-->
                 <!--</a>-->
                 <!--<img v-if="!item.cover" src="../assets/img/list1.jpg" :alt="item.title">-->
+                <!--<img v-if="index < 5 && item.cover" :src="item.cover" alt="">-->
                 <img class="lazy-img" :data-src="coverUrl + item.cover" alt="">
               </div>
             </el-col>
